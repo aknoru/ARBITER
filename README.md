@@ -42,11 +42,11 @@ A deterministic, research-grade batched order matching engine implemented in thr
           │         Batch Matching Cycle               │
           │                                            │
           │  1. Drain resting book  ──►  buy[ ] sell[] │
-          │  2. Merge new orders    ──►  append         │
-          │  3. Sort BUY  (price↓ ts↑ id↑)            │
-          │  4. Sort SELL (price↑ ts↑ id↑)            │
-          │  5. Two-pointer match   ──►  trades[]       │
-          │  6. Reinsert residuals  ──►  resting book   │
+          │  2. Merge new orders    ──►  append        │
+          │  3. Sort BUY  (price↓ ts↑ id↑)             │
+          │  4. Sort SELL (price↑ ts↑ id↑)             │
+          │  5. Two-pointer match   ──►  trades[]      │
+          │  6. Reinsert residuals  ──►  resting book  │
           └───────┬────────────────────────────────────┘
                   │
           ┌───────▼────────┐
@@ -56,9 +56,9 @@ A deterministic, research-grade batched order matching engine implemented in thr
  Verilog RTL FSM (bame_top.v):
  ┌──────────────────────────────────────────────┐
  │                                              │
- │  IDLE → LOAD → SORT_BUY → SORT_SELL →       │
+ │  IDLE → LOAD → SORT_BUY → SORT_SELL →        │
  │                                              │
- │  MATCH → WRITEBACK → OUTPUT → DONE → IDLE   │
+ │  MATCH → WRITEBACK → OUTPUT → DONE → IDLE    │
  │                                              │
  └──────────────────────────────────────────────┘
 ```
