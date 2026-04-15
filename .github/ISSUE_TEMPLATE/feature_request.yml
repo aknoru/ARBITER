@@ -1,0 +1,50 @@
+---
+name: Feature Request
+description: Suggest a new feature or improvement (e.g., new order type, optimisation, new implementation language)
+title: "[FEATURE] "
+labels: ["enhancement"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to suggest an improvement!
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Feature Area
+      options:
+        - Matching algorithm (e.g., new order types, cancellation)
+        - RTL performance (e.g., pipeline stages, reduce sort cycles)
+        - New implementation (e.g., Python, SystemVerilog, VHDL)
+        - PS+PL integration (AXI-Lite resting-book interface)
+        - Testing / verification (new test vectors, formal verification)
+        - Documentation / paper
+        - CI / build system
+    validations:
+      required: true
+
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Why is this feature needed? What problem does it solve?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Solution
+      description: How would you implement this? Any design sketches welcome.
+    validations:
+      required: false
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered other approaches?
+    validations:
+      required: false

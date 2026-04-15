@@ -1,0 +1,92 @@
+# =============================================================================
+# .gitignore — Batched Arbitration Matching Engine
+# =============================================================================
+
+# ---- Rust ----
+/target/
+# Cargo.lock is intentionally tracked for application crates (reproducible builds)
+
+# ---- C++ build artifacts ----
+cpp/*.o
+cpp/*.obj
+cpp/engine
+cpp/engine.exe
+cpp/*.out
+
+# ---- Vivado generated project (large, fully reproducible via synth_bame.tcl) ----
+vivado/
+*.jou
+*.str
+# Keep results/ folder but ignore generated content
+results/*.rpt
+results/*.bit
+results/*.log
+results/*.xpr
+# Do NOT ignore results/.gitkeep
+
+# ---- Xilinx auto-generated project internals ----
+*.runs/
+*.cache/
+*.hw/
+*.ip_user_files/
+*.sim/
+*.gen/
+*.srcs/
+*.hbs
+.Xil/
+xsim.dir/
+
+# ---- Simulation outputs ----
+*.vcd
+*.wdb
+*.wcfg
+*.lxt
+*.fst
+
+# ---- Vivado logs (keep none) ----
+vivado.log
+vivado_pid*.str
+webtalk*.log
+webtalk*.jou
+
+# ---- Temporary comparison files ----
+.cpp_out_tmp.txt
+*.out_tmp*
+/tests/cpp_output.txt
+/src/actual_output.txt
+
+# ---- OS files ----
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# ---- Editor / IDE ----
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.swp
+*.swo
+*~
+*.bak
+*.tmp
+\#*\#
+
+# ---- Python (if scripts are added later) ----
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+venv/
+.env
+
+# ---- GTKWave save files ----
+*.gtkw
+
+# ---- Build system ----
+*.d

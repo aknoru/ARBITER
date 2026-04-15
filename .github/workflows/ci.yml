@@ -1,0 +1,137 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+permissions:
+  contents: read
+
+# ============================================================
+# Job 1: C++ Build + Golden Output Verification
+# ============================================================
+jobs:
+  cpp:
+    name: "C++ — Build & Verify"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install g++ (C++17)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y g++
+
+      - name: Build engine
+        run: make cpp-build
+
+      - name: Smoke-run
+        run: make cpp-run
+
+      - name: Verify output matches golden file
+        run: make cpp-check
+
+      - name: Upload engine binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: bame-engine-linux
+          path: cpp/engine
+          retention-days: 7
+
+  # ============================================================
+  # Job 2: Rust Build
+  # ============================================================
+  rust:
+    name: "Rust — Build & Run"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Rust stable
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+
+      - name: Cache Cargo registry
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+
+      - name: Build (release)
+        run: cargo build --release
+
+      - name: Run against test vectors
+        run: cargo run --release -- tests/orders.txt
+
+  # ============================================================
+  # Job 3: Verilog RTL Syntax Check (iverilog)
+  # ============================================================
+  rtl-lint:
+    name: "RTL — Verilog-2001 Syntax Check"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install iverilog
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y iverilog
+
+      - name: Check bame_arb_cmp.v
+        run: iverilog -g2001 -Wall -t null rtl/bame_arb_cmp.v
+
+      - name: Check bame_top.v (elaboration + submodule)
+        run: iverilog -g2001 -Wall -t null rtl/bame_arb_cmp.v rtl/bame_top.v
+
+      - name: Check tb_bame_top.v (full hierarchy)
+        run: iverilog -g2001 -Wall -t null rtl/bame_arb_cmp.v rtl/bame_top.v rtl/tb_bame_top.v
+
+      - name: Run behavioural simulation
+        run: |
+          iverilog -g2001 -o /tmp/bame_sim \
+            rtl/bame_arb_cmp.v rtl/bame_top.v rtl/tb_bame_top.v
+          cd /tmp && timeout 30 vvp bame_sim | tee sim_output.txt
+          grep -q "ALL TESTS PASSED" sim_output.txt && \
+            echo "SIMULATION PASS" || \
+            (echo "SIMULATION FAIL — review output above" && exit 1)
+
+  # ============================================================
+  # Job 4: File structure sanity check
+  # ============================================================
+  structure:
+    name: "Repo — Required Files Present"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify required files exist
+        run: |
+          for f in \
+            README.md LICENSE CITATION.cff CONTRIBUTING.md CHANGELOG.md \
+            src/types.rs src/orderbook.rs src/batch_matcher.rs src/csv_parser.rs src/main.rs \
+            cpp/main.cpp cpp/orderbook.cpp cpp/matcher.cpp cpp/order.h \
+            rtl/bame_arb_cmp.v rtl/bame_top.v rtl/tb_bame_top.v \
+            rtl/sim_bame.tcl rtl/synth_bame.tcl rtl/bame_zedboard.xdc \
+            tests/orders.txt tests/golden_output.txt tests/orders.mem \
+            paper/bame_technical_report.md; do
+            if [ ! -f "$f" ]; then
+              echo "MISSING: $f"
+              exit 1
+            else
+              echo "OK: $f"
+            fi
+          done

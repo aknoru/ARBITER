@@ -1,0 +1,77 @@
+cff-version: 1.2.0
+message: >
+  If you use this software in your research or reference it in academic work,
+  please cite it using the metadata below.
+
+type: software
+
+title: "Batched Arbitration Matching Engine (BAME)"
+
+abstract: >
+  A deterministic, research-grade batched order matching engine implemented in
+  three languages — Rust (canonical reference), C++ (benchmark), and synthesisable
+  Verilog RTL (FPGA) — producing bit-exact identical trade output across all three
+  implementations. The engine demonstrates cross-language co-verification methodology
+  for financial hardware/software systems targeting Xilinx Zynq-7000 (ZedBoard).
+
+version: "1.0.0"
+date-released: "2026-04-16"
+license: MIT
+
+url: "https://github.com/{owner}/rx-matching-engine"
+repository-code: "https://github.com/{owner}/rx-matching-engine"
+
+keywords:
+  - matching-engine
+  - limit-order-book
+  - FPGA
+  - Verilog
+  - RTL
+  - Zynq
+  - ZedBoard
+  - high-frequency-trading
+  - hardware-software-codesign
+  - price-time-priority
+  - batch-processing
+  - deterministic
+
+authors:
+  - name: "BAME Contributors"
+
+preferred-citation:
+  type: article
+  title: >
+    BAME: A Deterministic Batched Arbitration Matching Engine with
+    Cross-Language Verification for FPGA Deployment
+  authors:
+    - name: "BAME Contributors"
+  year: 2026
+  notes: >
+    Technical report. Available at https://github.com/{owner}/rx-matching-engine.
+    See paper/bame_technical_report.md.
+
+references:
+  - type: report
+    title: "NASDAQ TotalView-ITCH 5.0 Specification"
+    authors:
+      - name: "The NASDAQ Stock Market LLC"
+    year: 2020
+
+  - type: article
+    title: "High Frequency Trading on FPGAs"
+    authors:
+      - family-names: "Leber"
+        given-names: "C."
+      - family-names: "Geib"
+        given-names: "B."
+      - family-names: "Litz"
+        given-names: "H."
+    year: 2011
+    journal: "Proceedings of the 21st International Conference on Field Programmable Logic and Applications (FPL)"
+
+  - type: software
+    title: "Xilinx Vivado Design Suite ML Standard 2022.2"
+    authors:
+      - name: "AMD (formerly Xilinx)"
+    year: 2022
+    url: "https://www.xilinx.com/products/design-tools/vivado.html"

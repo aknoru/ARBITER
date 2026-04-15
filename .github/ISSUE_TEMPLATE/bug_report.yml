@@ -1,0 +1,67 @@
+---
+name: Bug Report
+description: Report incorrect matching output, simulation failure, or synthesis error
+title: "[BUG] "
+labels: ["bug", "needs-triage"]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for reporting a bug. Please fill out all sections below.
+        Before submitting, check that your issue doesn't already exist.
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Affected Component
+      options:
+        - Rust reference implementation
+        - C++ benchmark implementation
+        - Verilog RTL (bame_top.v / bame_arb_cmp.v)
+        - Testbench (tb_bame_top.v)
+        - Vivado synthesis / implementation
+        - Build system (Makefile)
+        - Documentation / README
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: What went wrong? What did you expect to happen?
+      placeholder: |
+        Expected: TRADE buy_id=107 sell_id=102 price=99 qty=5
+        Actual:   TRADE buy_id=101 sell_id=102 price=99 qty=5
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to Reproduce
+      placeholder: |
+        1. `make cpp-build`
+        2. `./cpp/engine tests/orders.txt`
+        3. Trade #1 shows wrong buy_id
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: |
+        OS: Windows 11 / Ubuntu 22.04
+        Compiler: g++ 15.2 / gcc 11.4
+        Rust: 1.77.0
+        Vivado: 2022.2
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Additional Context
+      description: Paste relevant output, waveform screenshots, or diff output here.
