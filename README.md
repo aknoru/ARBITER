@@ -1,9 +1,32 @@
-# Batched Arbitration Matching Engine (BAME)
+# BAME — Batched Arbitration Matching Engine
 
-A deterministic, research-grade batched order matching engine implemented in three languages — **Rust** (canonical reference), **C++** (benchmark), and **Verilog RTL** (FPGA synthesisable) — producing identical, bit-reproducible trade output across all three implementations.
+[![CI](https://github.com/{owner}/rx-matching-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/{owner}/rx-matching-engine/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Rust](https://img.shields.io/badge/rust-stable-orange.svg)](https://www.rust-lang.org/)
+[![C++17](https://img.shields.io/badge/c%2B%2B-17-blue.svg)](cpp/)
+[![Verilog](https://img.shields.io/badge/verilog-2001-green.svg)](rtl/)
+[![Vivado](https://img.shields.io/badge/vivado-2022.2-red.svg)](rtl/synth_bame.tcl)
+[![Target](https://img.shields.io/badge/FPGA-xc7z020%20ZedBoard-lightgrey.svg)](rtl/bame_zedboard.xdc)
 
-> **Target hardware:** Xilinx ZedBoard (xc7z020clg484-1, Zynq-7000)  
-> **Clock:** 100 MHz · **Batch size:** 8 orders · **Latency:** ≤ 132 cycles per batch
+> A deterministic, research-grade batched order matching engine implemented in three
+> languages — **Rust** (canonical reference), **C++** (benchmark), and **synthesisable
+> Verilog RTL** (FPGA co-processor) — producing **bit-exact identical** trade output
+> across all three implementations.
+
+| Metric | Value |
+|---|---|
+| Target FPGA | Xilinx xc7z020clg484-1 (ZedBoard) |
+| Clock | 100 MHz |
+| Batch size | 8 orders |
+| Worst-case latency | 132 cycles = 1.32 µs |
+| Throughput | ≥ 6 M orders/sec |
+| LUT utilisation | ~0.4% of xc7z020 |
+| BRAM / DSP | 0 / 0 |
+
+📄 **[Full Technical Report](paper/bame_technical_report.md)** · 
+🔖 **[Cite This Repository](CITATION.cff)** · 
+📋 **[Changelog](CHANGELOG.md)** · 
+🤝 **[Contributing](CONTRIBUTING.md)**
 
 ---
 
