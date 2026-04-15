@@ -18,8 +18,8 @@ version: "1.0.0"
 date-released: "2026-04-16"
 license: MIT
 
-url: "https://github.com/aknoru/rx-matching-engine"
-repository-code: "https://github.com/aknoru/rx-matching-engine"
+url: "https://github.com/aknoru/ARBITER"
+repository-code: "https://github.com/aknoru/ARBITER"
 
 keywords:
   - matching-engine
@@ -47,7 +47,7 @@ preferred-citation:
     - name: "BAME Contributors"
   year: 2026
   notes: >
-    Technical report. Available at https://github.com/aknoru/rx-matching-engine.
+    Technical report. Available at https://github.com/aknoru/ARBITER.
     See paper/bame_technical_report.md.
 
 references:
