@@ -88,5 +88,5 @@ Versioning follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
-[Unreleased]: https://github.com/{owner}/rx-matching-engine/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/{owner}/rx-matching-engine/releases/tag/v1.0.0
+[Unreleased]: https://github.com/aknoru/rx-matching-engine/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/aknoru/rx-matching-engine/releases/tag/v1.0.0
