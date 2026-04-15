@@ -1,6 +1,6 @@
 # BAME — Batched Arbitration Matching Engine
 
-[![CI](https://github.com/aknoru/rx-matching-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/aknoru/rx-matching-engine/actions/workflows/ci.yml)
+[![CI](https://github.com/aknoru/ARBITER/actions/workflows/ci.yml/badge.svg)](https://github.com/aknoru/ARBITER/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Rust](https://img.shields.io/badge/rust-stable-orange.svg)](https://www.rust-lang.org/)
 [![C++17](https://img.shields.io/badge/c%2B%2B-17-blue.svg)](cpp/)
