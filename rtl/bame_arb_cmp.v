@@ -16,12 +16,12 @@
 module bame_arb_cmp (
     // ---- Order A fields ----
     input  wire [31:0] ts_a,     // timestamp
-    input  wire [31:0] id_a,     // order_id (unique, final tie-breaker)
+    input  wire [63:0] id_a,     // order_id (unique, final tie-breaker)
     input  wire [15:0] price_a,  // price tick
 
     // ---- Order B fields ----
     input  wire [31:0] ts_b,
-    input  wire [31:0] id_b,
+    input  wire [63:0] id_b,
     input  wire [15:0] price_b,
 
     // ---- Sort direction ----

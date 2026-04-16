@@ -10,16 +10,15 @@ create_clock -period 10.000 -name sys_clk_100 [get_ports clk]
 
 ## ---- Input timing (relaxed for simulation/verification) ----
 ## Assume inputs are stable 2 ns before clock edge, hold 1 ns after.
-set_input_delay  -clock sys_clk_100 -max 2.0 [get_ports {rst_n input_valid order_in[*] output_ready}]
-set_input_delay  -clock sys_clk_100 -min 0.5 [get_ports {rst_n input_valid order_in[*] output_ready}]
+set_input_delay  -clock sys_clk_100 -max 2.0 [get_ports {rst input_valid order_in[*] output_ready flush_in}]
+set_input_delay  -clock sys_clk_100 -min 0.5 [get_ports {rst input_valid order_in[*] output_ready flush_in}]
 
 ## ---- Output timing ----
 set_output_delay -clock sys_clk_100 -max 2.0 [get_ports {input_ready output_valid trade_out[*] done state_dbg[*]}]
 set_output_delay -clock sys_clk_100 -min 0.5 [get_ports {input_ready output_valid trade_out[*] done state_dbg[*]}]
 
 ## ---- False paths ----
-## Reset is asynchronous; no timing requirement between rst_n and clk edge.
-set_false_path -from [get_ports rst_n]
+## Reset is now synchronous; timing requirement is enforced.
 
 ## ---- Timing exceptions for debug signals ----
 ## state_dbg is for waveform analysis only; relax timing constraint.

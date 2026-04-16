@@ -1,0 +1,28 @@
+[package]
+name        = "bame"
+version     = "1.0.0"
+edition     = "2021"
+description = "Batched Arbitration Matching Engine — Rust reference + ITCH 5.0 ingress"
+license     = "MIT"
+repository  = "https://github.com/aknoru/ARBITER"
+
+# ── Binaries ─────────────────────────────────────────────────────────────────
+[[bin]]
+name = "bame"
+path = "src/main.rs"
+
+[[bin]]
+name  = "gen_itch_sample"
+path  = "src/bin/gen_itch_sample.rs"
+
+# ── Dependencies ──────────────────────────────────────────────────────────────
+[dependencies]
+# Transparent gzip decompression for NASDAQ ITCH .bin.gz files
+flate2 = "1.0"
+
+# ── Release profile ───────────────────────────────────────────────────────────
+[profile.release]
+opt-level     = 3
+lto           = true
+codegen-units = 1
+strip         = true

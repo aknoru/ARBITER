@@ -62,8 +62,8 @@ static bool parse_order_line(const std::string& line,
         v = std::stoul(fields[0]);
         out.timestamp = static_cast<uint32_t>(v);
 
-        v = std::stoul(fields[1]);
-        out.id = static_cast<uint32_t>(v);
+        unsigned long long id_ll = std::stoull(fields[1]);
+        out.id = static_cast<uint64_t>(id_ll);
 
         if      (fields[2] == "BUY")  out.side = Side::Buy;
         else if (fields[2] == "SELL") out.side = Side::Sell;
@@ -75,7 +75,7 @@ static bool parse_order_line(const std::string& line,
         }
 
         v = std::stoul(fields[3]);
-        out.price = static_cast<uint32_t>(v);
+        out.price = static_cast<uint16_t>(v);
 
         v = std::stoul(fields[4]);
         out.qty = static_cast<uint32_t>(v);

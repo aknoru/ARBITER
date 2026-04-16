@@ -19,16 +19,16 @@ enum class Side : uint8_t { Buy, Sell };
 /// and maps cleanly to 32-bit Verilog wires.
 struct Order {
     uint32_t timestamp; // monotonically non-decreasing; used for price-time priority
-    uint32_t id;        // unique within one session
+    uint64_t id;        // unique within one session
     Side     side;      // BUY or SELL
-    uint32_t price;     // integer ticks; range [1, 65535]
-    uint32_t qty;       // integer lots; range [1, 65535]; may decrease on partial fill
+    uint16_t price;     // integer ticks; range [1, 65535]
+    uint32_t qty;       // integer lots; may decrease on partial fill
 };
 
 /// One executed trade produced by process_batch().
 struct Trade {
-    uint32_t buy_id;
-    uint32_t sell_id;
-    uint32_t price;  // = sell.price (canonical intra-batch trade price rule)
+    uint64_t buy_id;
+    uint64_t sell_id;
+    uint16_t price;  // = sell.price (canonical intra-batch trade price rule)
     uint32_t qty;
 };

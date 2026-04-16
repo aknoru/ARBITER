@@ -52,7 +52,7 @@ pub fn parse_order_line(line: &str) -> Result<Order, ParseError> {
         .parse()
         .map_err(|_| ParseError::BadInteger { field: "timestamp", raw: fields[0].to_string() })?;
 
-    let id: u32 = fields[1]
+    let id: u64 = fields[1]
         .parse()
         .map_err(|_| ParseError::BadInteger { field: "order_id", raw: fields[1].to_string() })?;
 
@@ -62,7 +62,7 @@ pub fn parse_order_line(line: &str) -> Result<Order, ParseError> {
         other  => return Err(ParseError::InvalidSide(other.to_string())),
     };
 
-    let price: u32 = fields[3]
+    let price: u16 = fields[3]
         .parse()
         .map_err(|_| ParseError::BadInteger { field: "price", raw: fields[3].to_string() })?;
 

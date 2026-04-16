@@ -21,7 +21,7 @@ use std::io::{BufRead, BufReader};
 
 use batch_matcher::{Trade, process_batch};
 use csv_parser::parse_order_line;
-use types::{Order, OrderBook, BATCH_SIZE};
+use types::{Order, Side, OrderBook, BATCH_SIZE};
 
 // ---------------------------------------------------------------------------
 // Entry point
@@ -53,6 +53,7 @@ fn run_engine<R: BufRead>(reader: R) {
     let mut book      = OrderBook::new();
     let mut batch     = Vec::<Order>::with_capacity(BATCH_SIZE);
     let mut batch_num = 0u32;
+    let mut mem_file  = File::create("tests/orders.mem").expect("failed to create orders.mem");
 
     for (line_idx, line_result) in reader.lines().enumerate() {
         let line = match line_result {
@@ -72,6 +73,12 @@ fn run_engine<R: BufRead>(reader: R) {
 
         match parse_order_line(&trimmed) {
             Ok(order) => {
+                let side_bit = if order.side == Side::Buy { 1 } else { 0 };
+                let bin_str = format!("{:064b}{:016b}{:032b}{:032b}{:b}\n",
+                    order.id, order.price, order.qty, order.timestamp, side_bit);
+                use std::io::Write;
+                mem_file.write_all(bin_str.as_bytes()).unwrap();
+
                 batch.push(order);
                 if batch.len() == BATCH_SIZE {
                     batch_num += 1;

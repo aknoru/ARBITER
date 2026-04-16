@@ -26,7 +26,7 @@ impl OrderBook {
     }
 
     /// Reduce `qty` from a resting order; remove completely if qty reaches 0.
-    pub fn execute_order(&mut self, order_id: u32, qty: u32) {
+    pub fn execute_order(&mut self, order_id: u64, qty: u32) {
         if let Some(order) = self.orders.get_mut(&order_id) {
             let traded = qty.min(order.qty);
             order.qty -= traded;
@@ -52,12 +52,12 @@ impl OrderBook {
 
     /// Cancel (reduce) `qty` from a resting order.
     /// Semantically equivalent to execute for this implementation.
-    pub fn cancel_order(&mut self, order_id: u32, qty: u32) {
+    pub fn cancel_order(&mut self, order_id: u64, qty: u32) {
         self.execute_order(order_id, qty);
     }
 
     /// Delete an order entirely from the book regardless of remaining qty.
-    pub fn delete_order(&mut self, order_id: u32) {
+    pub fn delete_order(&mut self, order_id: u64) {
         if let Some(order) = self.orders.remove(&order_id) {
             let price = order.price as usize;
             let book = match order.side {
@@ -85,7 +85,7 @@ impl OrderBook {
         for price in (0..self.bids.len()).rev() {
             // Collect IDs first so we can release the borrow on self.bids
             // before accessing self.orders.
-            let ids: Vec<u32> = self.bids[price].orders.drain(..).collect();
+            let ids: Vec<u64> = self.bids[price].orders.drain(..).collect();
             self.bids[price].total_qty = 0;
             for id in ids {
                 if let Some(order) = self.orders.remove(&id) {
@@ -102,7 +102,7 @@ impl OrderBook {
     pub fn drain_asks(&mut self) -> Vec<Order> {
         let mut result = Vec::new();
         for price in 0..self.asks.len() {
-            let ids: Vec<u32> = self.asks[price].orders.drain(..).collect();
+            let ids: Vec<u64> = self.asks[price].orders.drain(..).collect();
             self.asks[price].total_qty = 0;
             for id in ids {
                 if let Some(order) = self.orders.remove(&id) {

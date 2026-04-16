@@ -19,17 +19,17 @@ pub enum Side {
 
 /// A single resting or incoming limit order.
 ///
-/// Type changes from the baseline:
-///  - `id`    : u64 → u32  (sufficient for session; FPGA-friendly)
-///  - `price` : usize → u32 (consistent; cast to usize only for array indexing)
-///  - `qty`   : u64 → u32  (fits MAX_QTY = 65535; FPGA-friendly)
-///  - `timestamp` : new field u32 — required for price-time priority
+/// Type changes for Hard Validation Mode:
+///  - `id`    : u64
+///  - `price` : u16
+///  - `qty`   : u32
+///  - `timestamp` : u32
 #[derive(Clone, Debug)]
 pub struct Order {
     pub timestamp: u32,
-    pub id:        u32,
+    pub id:        u64,
     pub side:      Side,
-    pub price:     u32,
+    pub price:     u16,
     pub qty:       u32,
 }
 
@@ -41,7 +41,7 @@ pub struct Order {
 #[derive(Clone)]
 pub struct PriceLevel {
     pub total_qty: u64,
-    pub orders:    VecDeque<u32>,
+    pub orders:    VecDeque<u64>,
 }
 
 impl Default for PriceLevel {
@@ -56,14 +56,14 @@ impl Default for PriceLevel {
 /// The persistent limit order book.
 ///
 /// Structurally identical to the baseline (price-indexed arrays of FIFO queues
-/// plus a flat order map), adapted for u32 types throughout.
+/// plus a flat order map), adapted for u64 id types throughout.
 pub struct OrderBook {
     /// Bid levels, indexed by price (0..MAX_PRICE).
     pub bids:   Vec<PriceLevel>,
     /// Ask levels, indexed by price (0..MAX_PRICE).
     pub asks:   Vec<PriceLevel>,
     /// Flat lookup: order_id → Order (live orders only).
-    pub orders: HashMap<u32, Order>,
+    pub orders: HashMap<u64, Order>,
 }
 
 impl OrderBook {

@@ -7,9 +7,9 @@ use crate::types::{Order, OrderBook, Side};
 /// One executed trade, produced by `process_batch`.
 #[derive(Debug)]
 pub struct Trade {
-    pub buy_id:  u32,
-    pub sell_id: u32,
-    pub price:   u32,
+    pub buy_id:  u64,
+    pub sell_id: u64,
+    pub price:   u16,
     pub qty:     u32,
 }
 

@@ -109,6 +109,7 @@ update_compile_order -fileset sources_1
 # ============================================================
 puts "\n=== STEP 1: Synthesis ==="
 synth_design \
+    -mode             out_of_context \
     -top              bame_top  \
     -part             $part     \
     -flatten_hierarchy rebuilt  \
@@ -183,9 +184,9 @@ if { [expr {$wns >= 0.0}] } {
 # Generate bitstream
 # ============================================================
 puts "\n=== STEP 6: Bitstream ==="
-write_bitstream \
-    -force \
-    [file join $res_dir bame_top.bit]
+# write_bitstream \
+#     -force \
+#     [file join $res_dir bame_top.bit]
 
 puts "\n==================================================="
 puts "  BAME Vivado Flow Complete"
