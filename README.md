@@ -5,7 +5,7 @@
 [![Rust](https://img.shields.io/badge/rust-stable-orange.svg)](https://www.rust-lang.org/)
 [![C++17](https://img.shields.io/badge/c%2B%2B-17-blue.svg)](cpp/)
 [![Verilog](https://img.shields.io/badge/verilog-2001-green.svg)](rtl/)
-[![Vivado](https://img.shields.io/badge/vivado-2022.2-red.svg)](rtl/synth_bame.tcl)
+[![Vivado](https://img.shields.io/badge/vivado-2024.2-red.svg)](rtl/synth_bame.tcl)
 [![Target](https://img.shields.io/badge/FPGA-xc7z020%20ZedBoard-lightgrey.svg)](rtl/bame_zedboard.xdc)
 
 > A deterministic, research-grade batched order matching engine implemented in three
