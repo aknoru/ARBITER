@@ -84,23 +84,28 @@ initial begin
     $display("  BAME RTL Testbench — Hardware Validation Pipeline");
     $display("=======================================================");
 
-    // Read memories populated by Rust CSV pipeline
-    // For local tests where 'orders.mem' might not exist immediately, we try to open it
-    $readmemb("tests/orders.mem", order_mem);
-    
-    // Find how many lines were populated
-    while (order_mem[mem_lines] !== 145'hx && mem_lines < 1024) begin
-        mem_lines = mem_lines + 1;
-    end
-    
-    $display("INFO: Loaded %0d orders from tests/orders.mem", mem_lines);
-
-    // Initial resets
+    // Drive reset HIGH immediately — prevents X state on first posedge clk
     rst          = 1'b1;
     input_valid  = 1'b0;
     flush_in     = 1'b0;
     order_in     = 145'h0;
     output_ready = 1'b1;
+
+    // Read memories populated by Rust CSV pipeline
+    $readmemb("tests/orders.mem", order_mem);
+
+    // Find how many lines were populated
+    while (order_mem[mem_lines] !== 145'hx && mem_lines < 1024) begin
+        mem_lines = mem_lines + 1;
+    end
+
+    $display("INFO: Loaded %0d orders from tests/orders.mem", mem_lines);
+
+    // Abort cleanly if orders.mem is missing — tells CI exactly what went wrong
+    if (mem_lines == 0) begin
+        $display("FATAL: tests/orders.mem is empty or missing. Run 'cargo run --bin bame -- tests/orders.txt' first.");
+        $finish;
+    end
 
     repeat(5) @(posedge clk);
     #1 rst = 1'b0;

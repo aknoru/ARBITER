@@ -74,7 +74,7 @@ jobs:
       - name: Build (release)
         run: cargo build --release --bin bame
 
-      - name: Run against test vectors
+      - name: Run against test vectors & generate orders.mem
         run: cargo run --release --bin bame -- tests/orders.txt
 
       - name: Compare output against golden
@@ -83,6 +83,13 @@ jobs:
           diff tests/golden_output.txt /tmp/rust_actual.txt && \
             echo "RUST OUTPUT MATCHES GOLDEN" || \
             (echo "RUST OUTPUT MISMATCH — review diff above" && exit 1)
+
+      - name: Upload orders.mem for RTL simulation
+        uses: actions/upload-artifact@v4
+        with:
+          name: orders-mem
+          path: tests/orders.mem
+          retention-days: 1
 
   # ============================================================
   # Job 3: Verilog RTL Syntax Check (iverilog)
@@ -102,13 +109,11 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y iverilog
 
-      - name: Setup Rust (to generate orders.mem)
-        uses: dtolnay/rust-toolchain@stable
+      - name: Download orders.mem from Rust job
+        uses: actions/download-artifact@v4
         with:
-          toolchain: stable
-
-      - name: Generate tests/orders.mem from CSV
-        run: cargo run --release --bin bame -- tests/orders.txt
+          name: orders-mem
+          path: tests/
 
       - name: Syntax-check bame_arb_cmp.v
         run: iverilog -g2001 -Wall -t null rtl/bame_arb_cmp.v
