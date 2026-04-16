@@ -76,9 +76,10 @@ reg  [3:0]   buy_cnt;
 reg  [3:0]   sell_cnt;
 reg  [3:0]   load_cnt;
 
-reg  [2:0]   sort_pass;
-reg  [2:0]   sort_idx;
+reg [2:0]   sort_pass;
+reg [2:0]   sort_idx;
 reg          sort_buy_mode;
+reg          pass_swapped; // early-exit flag for bubble sort
 
 reg  [3:0]   buy_ptr;
 reg  [3:0]   sell_ptr;
@@ -135,6 +136,7 @@ always @(posedge clk) begin
         sort_pass       <= 3'd0;
         sort_idx        <= 3'd0;
         sort_buy_mode   <= 1'b1;
+        pass_swapped    <= 1'b0;
         buy_ptr         <= 4'd0;
         sell_ptr        <= 4'd0;
         trade_cnt       <= 4'd0;
@@ -166,8 +168,7 @@ always @(posedge clk) begin
                     sort_pass    <= 3'd0;
                     sort_idx     <= 3'd0;
                     sort_buy_mode<= 1'b1;
-                    buy_ptr      <= 4'd0;
-                    sell_ptr     <= 4'd0;
+                    pass_swapped <= 1'b0;
                     trade_cnt    <= 4'd0;
                     trade_rd_ptr <= 4'd0;
                     state        <= (BATCH_SIZE == 1) ? ST_SORT : ST_LOAD;
@@ -197,14 +198,18 @@ always @(posedge clk) begin
                     if (do_swap) begin
                         buy_buf[sort_idx]   <= buy_buf[sort_idx+1];
                         buy_buf[sort_idx+1] <= buy_buf[sort_idx];
+                        pass_swapped        <= 1'b1;
                     end
                     if (sort_idx == (BATCH_SIZE - 2)) begin
                         sort_idx <= 3'd0;
-                        if (sort_pass == (BATCH_SIZE - 2)) begin
+                        // Early exit: if no swaps in this pass, OR we reached max passes
+                        if (sort_pass == (BATCH_SIZE - 2) || !pass_swapped) begin
                             sort_pass     <= 3'd0;
                             sort_buy_mode <= 1'b0;
+                            pass_swapped  <= 1'b0;
                         end else begin
-                            sort_pass <= sort_pass + 3'd1;
+                            sort_pass    <= sort_pass + 3'd1;
+                            pass_swapped <= 1'b0;
                         end
                     end else begin
                         sort_idx <= sort_idx + 3'd1;
@@ -213,14 +218,16 @@ always @(posedge clk) begin
                     if (do_swap) begin
                         sell_buf[sort_idx]   <= sell_buf[sort_idx+1];
                         sell_buf[sort_idx+1] <= sell_buf[sort_idx];
+                        pass_swapped         <= 1'b1;
                     end
                     if (sort_idx == (BATCH_SIZE - 2)) begin
                         sort_idx <= 3'd0;
-                        if (sort_pass == (BATCH_SIZE - 2)) begin
+                        if (sort_pass == (BATCH_SIZE - 2) || !pass_swapped) begin
                             sort_pass <= 3'd0;
                             state     <= ST_MATCH;
                         end else begin
-                            sort_pass <= sort_pass + 3'd1;
+                            sort_pass    <= sort_pass + 3'd1;
+                            pass_swapped <= 1'b0;
                         end
                     end else begin
                         sort_idx <= sort_idx + 3'd1;
