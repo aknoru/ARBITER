@@ -38,7 +38,7 @@ all: rust-build cpp-build
 
 rust-build:
 	$(CARGO) build --release
-	@echo "Rust build complete: target/release/rx-matching-engine"
+	@echo "Rust build complete: target/release/bame"
 
 rust-run: rust-build
 	$(CARGO) run --release -- $(ORDERS)

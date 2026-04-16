@@ -60,7 +60,7 @@ vivado -mode batch -source rtl/sim_bame.tcl
 ## Adding New Test Vectors
 
 1. Append orders to `tests/orders.txt` (CSV format, monotonically increasing timestamp).
-2. Update `tests/orders.mem` — generate 128-bit hex entries matching the encoding in `rtl/bame_top.v` (see §3.1 of the README).
+2. Update `tests/orders.mem` — generate 145-bit binary entries matching the encoding in `rtl/bame_top.v` (see §3.1 of the README).
 3. Run the **C++ engine** (as the reference after Rust) to regenerate `tests/golden_output.txt`:
    ```bash
    cd cpp && ./engine ../tests/orders.txt > ../tests/golden_output.txt
@@ -99,7 +99,7 @@ vivado -mode batch -source rtl/sim_bame.tcl
 
 ### Verilog
 - 4-space indent
-- **All** registers declared and driven from a single `always @(posedge clk or negedge rst_n)` block
+- **All** registers declared and driven from a single `always @(posedge clk)` block with synchronous high reset (`if (rst)`)
 - **Non-blocking assignments only** in clocked blocks
 - `begin`/`end` required on all multi-statement branches
 - Comment every FSM state transition

@@ -32,6 +32,7 @@
 
 `timescale 1ns / 1ps
 
+(* keep_hierarchy = "yes" *)
 module bame_top #(
     parameter integer BATCH_SIZE = 8
 )(
@@ -183,7 +184,7 @@ always @(posedge clk) begin
                         sell_cnt           <= sell_cnt + 4'd1;
                     end
                     load_cnt <= load_cnt + 4'd1;
-                    if (load_cnt == (BATCH_SIZE[3:0] - 4'd1)) begin
+                    if (load_cnt == (BATCH_SIZE - 1)) begin
                         state <= ST_SORT;
                     end
                 end else if (flush_in && load_cnt >= 4'd1) begin
@@ -197,9 +198,9 @@ always @(posedge clk) begin
                         buy_buf[sort_idx]   <= buy_buf[sort_idx+1];
                         buy_buf[sort_idx+1] <= buy_buf[sort_idx];
                     end
-                    if (sort_idx == (BATCH_SIZE[2:0] - 3'd2)) begin
+                    if (sort_idx == (BATCH_SIZE - 2)) begin
                         sort_idx <= 3'd0;
-                        if (sort_pass == (BATCH_SIZE[2:0] - 3'd2)) begin
+                        if (sort_pass == (BATCH_SIZE - 2)) begin
                             sort_pass     <= 3'd0;
                             sort_buy_mode <= 1'b0;
                         end else begin
@@ -213,9 +214,9 @@ always @(posedge clk) begin
                         sell_buf[sort_idx]   <= sell_buf[sort_idx+1];
                         sell_buf[sort_idx+1] <= sell_buf[sort_idx];
                     end
-                    if (sort_idx == (BATCH_SIZE[2:0] - 3'd2)) begin
+                    if (sort_idx == (BATCH_SIZE - 2)) begin
                         sort_idx <= 3'd0;
-                        if (sort_pass == (BATCH_SIZE[2:0] - 3'd2)) begin
+                        if (sort_pass == (BATCH_SIZE - 2)) begin
                             sort_pass <= 3'd0;
                             state     <= ST_MATCH;
                         end else begin

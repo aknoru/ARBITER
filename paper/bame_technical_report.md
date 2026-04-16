@@ -85,7 +85,7 @@ and **open documentation** rather than maximum throughput.
 
 ### 2.4 NASDAQ TotalView-ITCH 5.0
 
-The project baseline `rx-matching-engine` is a Rust implementation of a
+The project baseline `bame` is a Rust implementation of a
 market data replay engine for the NASDAQ TotalView-ITCH 5.0 protocol [7].
 ITCH is a binary unidirectional feed that carries order management messages
 (Add Order, Delete Order, Execute Order, etc.) from NASDAQ to subscribers. The
@@ -116,15 +116,13 @@ timestamp,order_id,side,price,quantity
 2,102,SELL,99,5
 ```
 
-**128-bit Verilog wire format:**
+**145-bit Verilog wire format:**
 ```
-[127:96]  timestamp   (32b)
-[ 95:64]  order_id    (32b)
-[    63]  side         (1b, 1=BUY)
-[ 62:48]  reserved    (15b)
-[ 47:32]  price        (16b)
-[ 31:16]  quantity     (16b)
-[ 15: 0]  reserved    (16b)
+[144:81]  order_id    (64b)
+[ 80:65]  price       (16b)
+[ 64:33]  quantity    (32b)
+[ 32: 1]  timestamp   (32b)
+[     0]  side        (1b, 1=BUY)
 ```
 
 ### 3.2 Batch Policy
@@ -349,16 +347,16 @@ processing of a partial batch without padding. Asserting `flush_in` while in
 | Port | Direction | Width | Description |
 |---|---|---|---|
 | `clk` | In | 1 | 100 MHz system clock |
-| `rst_n` | In | 1 | Async active-low reset |
+| `rst` | In | 1 | Synchronous active-high reset |
 | `input_valid` | In | 1 | Source presents valid order |
 | `input_ready` | Out | 1 | Engine ready to accept (IDLE or LOAD) |
-| `order_in` | In | 128 | Order word (see §3.1 format) |
+| `order_in` | In | 145 | Order word (see §3.1 format) |
 | `flush_in` | In | 1 | Force-flush partial batch |
 | `output_valid` | Out | 1 | Trade word available on `trade_out` |
 | `output_ready` | In | 1 | Sink ready to consume trade |
-| `trade_out` | Out | 128 | Trade word (buy\_id, sell\_id, price, qty) |
+| `trade_out` | Out | 176 | Trade word (buy\_id, sell\_id, price, qty) |
 | `done` | Out | 1 | High for one cycle when batch complete |
-| `state_dbg` | Out | 8 | Raw FSM state (one-hot; for waveform) |
+| `state_dbg` | Out | 7 | Raw FSM state (one-hot; for waveform) |
 
 ---
 
@@ -469,7 +467,7 @@ the practical routing-limited Fmax is estimated at **≈ 150 MHz**.
   integration model as a co-processor, not a standalone NIC.
 
 - **NASDAQ TotalView-ITCH 5.0 [7]** — The binary market data protocol parsed by
-  the baseline `rx-matching-engine`. BAME replaces binary ITCH parsing with
+  the baseline `bame`. BAME replaces binary ITCH parsing with
   CSV for portability and transparency, retaining the original LOB data structures.
 
 - **Weston et al. [6]** — FPGA-based ITCH 5.0 feed handler processing 10 Gbps.

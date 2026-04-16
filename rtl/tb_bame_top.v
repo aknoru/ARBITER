@@ -9,6 +9,10 @@ localparam CLK_PERIOD  = 10;   // 100 MHz → 10 ns period
 localparam BATCH_SZ    = 8;
 localparam TIMEOUT_CYC = 5000;
 
+`ifndef MEM_PATH
+    `define MEM_PATH "tests/orders.mem"
+`endif
+
 // =============================================================================
 // DUT signals
 // =============================================================================
@@ -92,7 +96,7 @@ initial begin
     output_ready = 1'b1;
 
     // Read memories populated by Rust CSV pipeline
-    $readmemb("tests/orders.mem", order_mem);
+    $readmemb(`MEM_PATH, order_mem);
 
     // Find how many lines were populated
     while (order_mem[mem_lines] !== 145'hx && mem_lines < 1024) begin

@@ -95,7 +95,7 @@ All trades execute at the **sell-side price**. This is a uniform-price clearing 
 ## 2. Repository Structure
 
 ```
-rx-matching-engine/
+bame/
 │
 ├── src/                        # Rust reference implementation
 │   ├── lib.rs                  # Crate root + module declarations
@@ -159,15 +159,13 @@ timestamp,order_id,side,price,quantity
 2,102,SELL,99,5
 ```
 
-#### 128-bit wire format (Verilog)
+#### 145-bit wire format (Verilog)
 ```
-[127:96] timestamp  (32b)
-[ 95:64] order_id   (32b)
-[    63] side        (1=BUY, 0=SELL)
-[ 62:48] reserved   (15b)
-[ 47:32] price       (16b)
-[ 31:16] quantity    (16b)
-[ 15: 0] reserved   (16b)
+[144:81] order_id   (64b)
+[ 80:65] price      (16b)
+[ 64:33] quantity   (32b)
+[ 32: 1] timestamp  (32b)
+[     0] side       (1b; 1=BUY, 0=SELL)
 ```
 
 ### 3.2 Batch Policy
@@ -255,7 +253,7 @@ BOOK SELL price=102 qty=3 order_id=106
 make rtl-sim
 
 # Or manually in Vivado Tcl Console:
-cd c:/arbiter/rx-matching-engine
+cd c:/arbiter/BAME
 source rtl/sim_bame.tcl
 ```
 
@@ -416,11 +414,11 @@ Target: **xc7z020clg484-1** (ZedBoard). Total device resources shown for referen
 | Estimated power | ~5 mW | — | negligible |
 
 **Register budget breakdown:**
-- `buy_buf[0:7]`:  8 × 128 = 1024 bits
-- `sell_buf[0:7]`: 8 × 128 = 1024 bits
-- `trade_buf[0:7]`: 8 × 128 = 1024 bits
-- Control registers: ~64 bits
-- **Total: ~3136 bits = 392 bytes**
+- `buy_buf[0:7]`:  8 × 145 = 1160 bits
+- `sell_buf[0:7]`: 8 × 145 = 1160 bits
+- `trade_buf[0:7]`: 8 × 176 = 1408 bits
+- Control registers: ~128 bits
+- **Total: ~3856 bits = 482 bytes**
 
 Vivado will typically infer `buy_buf`/`sell_buf` as **SRL32/distributed RAM** (faster, smaller than BRAM) due to the small depth and randomized access pattern.
 

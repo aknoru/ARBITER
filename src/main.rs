@@ -22,6 +22,7 @@ use std::io::{BufRead, BufReader};
 use batch_matcher::{Trade, process_batch};
 use csv_parser::parse_order_line;
 use types::{Order, Side, OrderBook, BATCH_SIZE};
+use itch_parser::{parse_message, ItchMessage, stock_name, price_to_bame_tick};
 
 // ---------------------------------------------------------------------------
 // Entry point
@@ -35,21 +36,49 @@ fn main() {
         return;
     }
 
-    let path = &args[1];
+    let mut is_itch = false;
+    let mut symbol = String::new();
+    let mut path = String::new();
 
-    let file = File::open(path).unwrap_or_else(|e| {
+    let mut i = 1;
+    while i < args.len() {
+        match args[i].as_str() {
+            "--itch" => {
+                is_itch = true;
+                i += 1;
+                if i < args.len() { path = args[i].clone(); }
+            }
+            "--symbol" => {
+                i += 1;
+                if i < args.len() { symbol = args[i].clone(); }
+            }
+            _ => { path = args[i].clone(); }
+        }
+        i += 1;
+    }
+
+    if path.is_empty() {
+        print_usage();
+        return;
+    }
+
+    let file = File::open(&path).unwrap_or_else(|e| {
         eprintln!("error: cannot open '{}': {}", path, e);
         std::process::exit(1);
     });
 
-    run_engine(BufReader::new(file));
+    if is_itch {
+        run_itch_engine(BufReader::new(file), &symbol);
+    } else {
+        run_csv_engine(BufReader::new(file));
+    }
 }
 
 // ---------------------------------------------------------------------------
 // Engine driver
 // ---------------------------------------------------------------------------
 
-fn run_engine<R: BufRead>(reader: R) {
+fn run_csv_engine<R: BufRead>(reader: R) {
     let mut book      = OrderBook::new();
     let mut batch     = Vec::<Order>::with_capacity(BATCH_SIZE);
     let mut batch_num = 0u32;
@@ -101,6 +130,60 @@ fn run_engine<R: BufRead>(reader: R) {
     print_book(&book);
 }
 
+fn run_itch_engine<R: std::io::Read>(mut reader: R, filter_symbol: &str) {
+    let mut book      = OrderBook::new();
+    let mut batch     = Vec::<Order>::with_capacity(BATCH_SIZE);
+    let mut batch_num = 0u32;
+    let mut mem_file  = File::create("tests/orders.mem").expect("failed to create orders.mem");
+
+    println!("INFO: Processing ITCH protocol data (filter: '{}')", filter_symbol);
+
+    while let Some(result) = parse_message(&mut reader) {
+        let msg = match result {
+            Ok(m) => m,
+            Err(e) => {
+                eprintln!("error: ITCH decode failure: {}", e);
+                break;
+            }
+        };
+
+        if let ItchMessage::AddOrder { ts_ns, order_ref, side, shares, stock, price } = msg {
+            let symbol = stock_name(&stock);
+            if !filter_symbol.is_empty() && symbol != filter_symbol {
+                continue;
+            }
+
+            let order = Order {
+                timestamp: (ts_ns % 1_000_000_000) as u32,
+                id:        order_ref,
+                side:      side,
+                price:     price_to_bame_tick(price),
+                qty:       shares,
+            };
+
+            // Write to mem file for simulation parity
+            let side_bit = if order.side == Side::Buy { 1 } else { 0 };
+            let bin_str = format!("{:064b}{:016b}{:032b}{:032b}{:b}\n",
+                order.id, order.price, order.qty, order.timestamp, side_bit);
+            use std::io::Write;
+            mem_file.write_all(bin_str.as_bytes()).unwrap();
+
+            batch.push(order);
+            if batch.len() == BATCH_SIZE {
+                batch_num += 1;
+                flush_batch(&mut book, &mut batch, batch_num);
+            }
+        }
+    }
+
+    if !batch.is_empty() {
+        batch_num += 1;
+        flush_batch(&mut book, &mut batch, batch_num);
+    }
+
+    print_book(&book);
+}
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -148,9 +231,13 @@ fn print_book(book: &OrderBook) {
 fn print_usage() {
     println!("Batched Arbitration Matching Engine  v1.0");
     println!();
-    println!("  USAGE:  matching_engine <orders.csv>");
+    println!("  USAGE:  matching_engine [OPTIONS] <file>");
     println!();
-    println!("  INPUT FORMAT (CSV, one order per line):");
+    println!("  OPTIONS:");
+    println!("    --itch           Interpret input as binary NASDAQ ITCH 5.0");
+    println!("    --symbol <SYM>   Filter ITCH stream for specific ticker (e.g. AAPL)");
+    println!();
+    println!("  INPUT FORMAT (CSV default, one order per line):");
     println!("    timestamp,order_id,side,price,quantity");
     println!("    # lines beginning with # are comments; empty lines ignored");
     println!();

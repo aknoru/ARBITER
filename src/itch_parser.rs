@@ -136,8 +136,8 @@ pub fn stock_name(stock: &[u8; 8]) -> &str {
 /// Convert a raw ITCH price (in $0.0001 increments) to BAME ticks ($0.01).
 /// AAPL $172.50 = raw 1_725_000 → bame tick 17_250 (fits in u16 up to $655.35)
 #[inline]
-pub fn price_to_bame_tick(raw_price: u32) -> u32 {
-    raw_price / 100
+pub fn price_to_bame_tick(raw_price: u32) -> u16 {
+    (raw_price / 100) as u16
 }
 
 // =============================================================================

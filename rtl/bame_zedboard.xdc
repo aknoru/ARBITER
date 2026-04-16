@@ -23,7 +23,10 @@ set_output_delay -clock sys_clk_100 -min 0.5 [get_ports {input_ready output_vali
 ## ---- Timing exceptions for debug signals ----
 ## state_dbg is for waveform analysis only; relax timing constraint.
 set_multicycle_path -setup -from [get_cells state_reg[*]] -to [get_ports state_dbg[*]] 2
-set_multicycle_path -hold  -from [get_cells state_reg[*]] -to [get_ports state_dbg[*]] 1
+# Hold check is only supported during Implementation; Synthesis will ignore this block.
+if { [get_property CLASS [current_design]] == "netlist" } {
+    set_multicycle_path -hold  -from [get_cells state_reg[*]] -to [get_ports state_dbg[*]] 1
+}
 
 ## ---- Physical I/O pin assignments (ZedBoard Pmod JA — for simulation only) ----
 ## Uncomment and adjust for actual hardware deployment.
