@@ -328,6 +328,27 @@ vivado -mode batch -source rtl/synth_bame.tcl
 
 All five report types are written to `results/`.
 
+### 4.5 ASIC Synthesis (Cadence Genus)
+
+**Requirements:** Cadence Genus Synthesis Solution, CentOS / RHEL environment.
+
+The design includes a fully synchronous, latch-free, loop-free Verilog hierarchy strictly targeted for ASIC synthesis flows.
+
+```bash
+# Navigate to the ASIC project directory
+cd project/scripts
+
+# Execute Genus in batch mode
+genus -batch -files genus_synth.tcl
+```
+
+**Flow steps executed:**
+1. `read_hdl` — Ingests the `filelist.f` containing the hierarchical datapath components.
+2. `elaborate` — Triggers module linkage against `top.sdc` constraints (100 MHz target, 2 ns I/O delays).
+3. `synthesize -to_mapped` — Maps design to target standard cell libraries (using vectorless power activity assumptions).
+4. `write_hdl` / `write_sdc` → Output saved to `project/netlist/`.
+5. `report_timing`, `report_power`, `report_area` → Output saved to `project/reports/`.
+
 ---
 
 ## 5. Test Vectors & Golden Output
