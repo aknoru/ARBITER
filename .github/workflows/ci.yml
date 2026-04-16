@@ -121,10 +121,12 @@ jobs:
 
       - name: Run behavioural simulation
         run: |
+          # Compile into /tmp but run vvp from project root so
+          # $readmemb("tests/orders.mem") resolves against the workspace
           iverilog -g2001 -o /tmp/bame_sim \
             rtl/bame_arb_cmp.v rtl/bame_top.v rtl/tb_bame_top.v
-          cd /tmp && timeout 60 vvp bame_sim | tee sim_output.txt
-          grep -q "SIMULATION COMPLETE" sim_output.txt && \
+          timeout 60 vvp /tmp/bame_sim | tee /tmp/sim_output.txt
+          grep -q "SIMULATION COMPLETE" /tmp/sim_output.txt && \
             echo "SIMULATION PASS" || \
             (echo "SIMULATION FAIL — review output above" && exit 1)
 

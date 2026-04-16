@@ -49,7 +49,7 @@ std::vector<Trade> process_batch(OrderBook& book, const std::vector<Order>& batc
         if (buys[i].price < sells[j].price) break; // no further match possible
 
         uint32_t trade_qty   = (buys[i].qty < sells[j].qty) ? buys[i].qty : sells[j].qty;
-        uint32_t trade_price = sells[j].price;
+        uint16_t trade_price = sells[j].price;
 
         trades.push_back({ buys[i].id, sells[j].id, trade_price, trade_qty });
 

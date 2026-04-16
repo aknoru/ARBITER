@@ -64,11 +64,11 @@ initial begin
 end
 
 // =============================================================================
-// X/Z State detector
+// X/Z State detector — only fires after reset has been released
 // =============================================================================
 always @(posedge clk) begin
-    if (state_dbg === 7'hx || state_dbg === 7'hz) begin
-        $display("FATAL: X/Z state detected in FSM. Simulation aborted.");
+    if (!rst && (state_dbg === 7'hx || state_dbg === 7'hz)) begin
+        $display("FATAL: X/Z state detected in FSM after reset. Simulation aborted.");
         $finish;
     end
 end
