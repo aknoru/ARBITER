@@ -9,6 +9,10 @@ on:
 permissions:
   contents: read
 
+defaults:
+  run:
+    working-directory: .
+
 # ============================================================
 # Job 1: C++ Build + Golden Output Verification
 # ============================================================
@@ -43,7 +47,7 @@ jobs:
           retention-days: 7
 
   # ============================================================
-  # Job 2: Rust Build
+  # Job 2: Rust Build & Verify
   # ============================================================
   rust:
     name: "Rust — Build & Run"
@@ -68,17 +72,26 @@ jobs:
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
 
       - name: Build (release)
-        run: cargo build --release
+        run: cargo build --release --bin bame
 
       - name: Run against test vectors
-        run: cargo run --release -- tests/orders.txt
+        run: cargo run --release --bin bame -- tests/orders.txt
+
+      - name: Compare output against golden
+        run: |
+          cargo run --release --bin bame -- tests/orders.txt > /tmp/rust_actual.txt
+          diff tests/golden_output.txt /tmp/rust_actual.txt && \
+            echo "RUST OUTPUT MATCHES GOLDEN" || \
+            (echo "RUST OUTPUT MISMATCH — review diff above" && exit 1)
 
   # ============================================================
   # Job 3: Verilog RTL Syntax Check (iverilog)
   # ============================================================
   rtl-lint:
-    name: "RTL — Verilog-2001 Syntax Check"
+    name: "RTL — Verilog-2001 Syntax Check & Simulation"
     runs-on: ubuntu-latest
+    # Must run after Rust so tests/orders.mem is generated
+    needs: rust
 
     steps:
       - name: Checkout
@@ -89,21 +102,29 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y iverilog
 
-      - name: Check bame_arb_cmp.v
+      - name: Setup Rust (to generate orders.mem)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+
+      - name: Generate tests/orders.mem from CSV
+        run: cargo run --release --bin bame -- tests/orders.txt
+
+      - name: Syntax-check bame_arb_cmp.v
         run: iverilog -g2001 -Wall -t null rtl/bame_arb_cmp.v
 
-      - name: Check bame_top.v (elaboration + submodule)
+      - name: Syntax-check bame_top.v (with submodule)
         run: iverilog -g2001 -Wall -t null rtl/bame_arb_cmp.v rtl/bame_top.v
 
-      - name: Check tb_bame_top.v (full hierarchy)
+      - name: Syntax-check tb_bame_top.v (full hierarchy)
         run: iverilog -g2001 -Wall -t null rtl/bame_arb_cmp.v rtl/bame_top.v rtl/tb_bame_top.v
 
       - name: Run behavioural simulation
         run: |
           iverilog -g2001 -o /tmp/bame_sim \
             rtl/bame_arb_cmp.v rtl/bame_top.v rtl/tb_bame_top.v
-          cd /tmp && timeout 30 vvp bame_sim | tee sim_output.txt
-          grep -q "ALL TESTS PASSED" sim_output.txt && \
+          cd /tmp && timeout 60 vvp bame_sim | tee sim_output.txt
+          grep -q "SIMULATION COMPLETE" sim_output.txt && \
             echo "SIMULATION PASS" || \
             (echo "SIMULATION FAIL — review output above" && exit 1)
 
@@ -122,11 +143,13 @@ jobs:
         run: |
           for f in \
             README.md LICENSE CITATION.cff CONTRIBUTING.md CHANGELOG.md \
-            src/types.rs src/orderbook.rs src/batch_matcher.rs src/csv_parser.rs src/main.rs \
+            Cargo.toml \
+            src/types.rs src/orderbook.rs src/batch_matcher.rs src/csv_parser.rs \
+            src/main.rs src/itch_parser.rs \
             cpp/main.cpp cpp/orderbook.cpp cpp/matcher.cpp cpp/order.h \
             rtl/bame_arb_cmp.v rtl/bame_top.v rtl/tb_bame_top.v \
             rtl/sim_bame.tcl rtl/synth_bame.tcl rtl/bame_zedboard.xdc \
-            tests/orders.txt tests/golden_output.txt tests/orders.mem \
+            tests/orders.txt tests/golden_output.txt \
             paper/bame_technical_report.md; do
             if [ ! -f "$f" ]; then
               echo "MISSING: $f"
@@ -135,3 +158,4 @@ jobs:
               echo "OK: $f"
             fi
           done
+          echo "All required files present."

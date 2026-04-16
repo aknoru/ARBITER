@@ -26,6 +26,7 @@ impl OrderBook {
     }
 
     /// Reduce `qty` from a resting order; remove completely if qty reaches 0.
+    #[allow(dead_code)]
     pub fn execute_order(&mut self, order_id: u64, qty: u32) {
         if let Some(order) = self.orders.get_mut(&order_id) {
             let traded = qty.min(order.qty);
@@ -52,11 +53,13 @@ impl OrderBook {
 
     /// Cancel (reduce) `qty` from a resting order.
     /// Semantically equivalent to execute for this implementation.
+    #[allow(dead_code)]
     pub fn cancel_order(&mut self, order_id: u64, qty: u32) {
         self.execute_order(order_id, qty);
     }
 
     /// Delete an order entirely from the book regardless of remaining qty.
+    #[allow(dead_code)]
     pub fn delete_order(&mut self, order_id: u64) {
         if let Some(order) = self.orders.remove(&order_id) {
             let price = order.price as usize;
