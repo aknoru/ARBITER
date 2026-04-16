@@ -5,6 +5,7 @@ edition     = "2021"
 description = "Batched Arbitration Matching Engine — Rust reference + ITCH 5.0 ingress"
 license     = "MIT"
 repository  = "https://github.com/aknoru/ARBITER"
+default-run = "bame"
 
 # ── Binaries ─────────────────────────────────────────────────────────────────
 [[bin]]
