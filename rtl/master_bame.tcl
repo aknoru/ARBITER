@@ -56,9 +56,35 @@ set_property -dict [list \
 
 create_bd_cell -type module -reference bame_axi_wrapper bame_axi_wrapper_0
 
-apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Master "/processing_system7_0/M_AXI_GP0" intc_ip "New AXI Interconnect" Clk_xbar "Auto" Clk_master "Auto" Clk_slave "Auto" }  [get_bd_intf_pins bame_axi_wrapper_0/s_axi]
+# 4. Add AXI-Stream FIFO for CPU-to-FPGA streaming
+create_bd_cell -type ip -vlnv xilinx.com:ip:axi_fifo_mm_s:4.3 axi_fifo_0
+set_property -dict [list \
+    CONFIG.C_USE_TX_DATA {1} \
+    CONFIG.C_USE_RX_DATA {1} \
+    CONFIG.C_TX_FIFO_DEPTH {1024} \
+    CONFIG.C_RX_FIFO_DEPTH {1024} \
+] [get_bd_cells axi_fifo_0]
 
+# 5. Run Connection Automation
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Master "/processing_system7_0/M_AXI_GP0" intc_ip "New AXI Interconnect" Clk_xbar "Auto" Clk_master "Auto" Clk_slave "Auto" }  [get_bd_intf_pins bame_axi_wrapper_0/s_axi]
+apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Master "/processing_system7_0/M_AXI_GP0" intc_ip "New AXI Interconnect" Clk_xbar "Auto" Clk_master "Auto" Clk_slave "Auto" }  [get_bd_intf_pins axi_fifo_0/S_AXI]
+
+# 6. Connect AXI-Stream Interfaces
+connect_bd_intf_net [get_bd_intf_pins axi_fifo_0/AXI_STR_TXD] [get_bd_intf_pins bame_axi_wrapper_0/s_axis_orders]
+connect_bd_intf_net [get_bd_intf_pins bame_axi_wrapper_0/m_axis_trades] [get_bd_intf_pins axi_fifo_0/AXI_STR_RXD]
+
+# 7. Connect Interrupts
 connect_bd_net [get_bd_pins bame_axi_wrapper_0/irq] [get_bd_pins processing_system7_0/IRQ_F2P]
+
+# 8. Clocks and Resets
+connect_bd_net [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins axi_fifo_0/s_axi_aclk]
+connect_bd_net [get_bd_pins rst_ps7_0_100M/peripheral_aresetn] [get_bd_pins axi_fifo_0/s_axi_aresetn]
+
+# 9. Force Address Assignments for Driver Parity
+assign_bd_address [get_bd_addr_segs {bame_axi_wrapper_0/s_axi/reg0}]
+set_property offset 0x40000000 [get_bd_addr_segs {processing_system7_0/Data/SEG_bame_axi_wrapper_0_reg0}]
+assign_bd_address [get_bd_addr_segs {axi_fifo_0/S_AXI/Mem0}]
+set_property offset 0x43C00000 [get_bd_addr_segs {processing_system7_0/Data/SEG_axi_fifo_0_Mem0}]
 
 validate_bd_design
 save_bd_design
