@@ -42,6 +42,13 @@ xsim.dir/
 *.wcfg
 *.lxt
 *.fst
+*.out           # iverilog compiled simulation binaries (e.g. bame_sim.out)
+clockInfo.txt   # Vivado clock summary auto-generated file
+wave.vcd
+
+# ---- Temp test output files ----
+rust_actual.txt
+cpp_actual.txt
 
 # ---- Vivado logs (keep none) ----
 vivado.log
