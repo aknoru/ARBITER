@@ -98,12 +98,10 @@ All trades execute at the **sell-side price**. This is a uniform-price clearing 
 bame/
 │
 ├── src/                        # Rust reference implementation
-│   ├── lib.rs                  # Crate root + module declarations
-│   ├── types.rs                # Order, Trade, PriceLevel, BATCH_SIZE=8
+│   ├── itch_parser.rs          # Itch binary data parser
+│   ├── types.rs                # Order, Trade, Order, PriceLevel
 │   ├── orderbook.rs            # Price-indexed FIFO array LOB
-│   ├── batch_matcher.rs        # Two-pointer batch matching algorithm
-│   ├── csv_parser.rs           # CSV order parser
-│   └── main.rs                 # Engine driver (CSV → batches → stdout)
+│   └── main.rs                 # Engine driver (BINARY → batches → stdout)
 │
 ├── cpp/                        # C++ benchmark implementation
 │   ├── order.h                 # Side, Order, Trade types; constants
