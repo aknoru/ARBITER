@@ -205,7 +205,7 @@ cargo build --release
 make rust-build
 ```
 
-### 4.2 Rust Benchmark Implementation
+### 4.2 Rust Benchmarks
 
 ```bash
 ITCH Processing
