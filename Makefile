@@ -79,7 +79,7 @@ rtl-sim:
 
 rtl-synth:
 	@echo "Running Vivado synthesis + implementation (this may take 5-10 minutes)..."
-	$(VIVADO) -mode batch -source rtl/synth_bame.tcl -log results/synth.log
+	$(VIVADO) -mode batch -source rtl/master_bame.tcl -log results/synth.log
 	@echo "Reports in results/"
 	@echo "  synth_utilization.rpt  impl_utilization.rpt"
 	@echo "  synth_timing.rpt       impl_timing.rpt"

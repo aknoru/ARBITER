@@ -23,9 +23,9 @@
 | LUT utilisation | ~0.4% of xc7z020 |
 | BRAM / DSP | 0 / 0 |
 
-📄 **[Full Technical Report](paper/bame_technical_report.md)** · 
-🔖 **[Cite This Repository](CITATION.cff)** · 
-📋 **[Changelog](CHANGELOG.md)** · 
+📄 **[Full Technical Report](paper/bame_technical_report.md)** ·
+🔖 **[Cite This Repository](CITATION.cff)** ·
+📋 **[Changelog](CHANGELOG.md)** ·
 🤝 **[Contributing](CONTRIBUTING.md)**
 
 ---
@@ -150,6 +150,7 @@ bame/
 | `quantity` | u32/u16 | 1 .. 65535 | Integer lot size; reduced on partial fill |
 
 #### CSV format (input)
+
 ```
 timestamp,order_id,side,price,quantity
 # comment lines and blank lines are ignored
@@ -158,6 +159,7 @@ timestamp,order_id,side,price,quantity
 ```
 
 #### 145-bit wire format (Verilog)
+
 ```
 [144:81] order_id   (64b)
 [ 80:65] price      (16b)
@@ -257,6 +259,7 @@ make cpp-check          # compares against tests/golden_output.txt
 ```
 
 **Example output:**
+
 ```
 BATCH 1 START orders=8
 TRADE buy_id=107 sell_id=102 price=99 qty=5
@@ -290,6 +293,7 @@ source rtl/sim_bame.tcl
 ```
 
 **Expected simulation output:**
+
 ```
 =======================================================
   BAME RTL Testbench — bame_top  (BATCH_SIZE=8)
@@ -326,11 +330,13 @@ source rtl/sim_bame.tcl
 ```
 
 The waveform is saved to `rtl/bame_sim.vcd`. Open with GTKWave:
+
 ```bash
 gtkwave rtl/bame_sim.vcd
 ```
 
 **Pre-configured waveform groups** (added by `sim_bame.tcl`):
+
 - Clock / Reset
 - Input handshake (`input_valid`, `input_ready`, `order_in`)
 - FSM state (`state_dbg` — one-hot)
@@ -347,10 +353,11 @@ gtkwave rtl/bame_sim.vcd
 make rtl-synth
 
 # Or manually:
-vivado -mode batch -source rtl/synth_bame.tcl
+vivado -mode batch -source rtl/master_bame.tcl
 ```
 
 **Flow steps executed:**
+
 1. `synth_design` — RTL elaboration + technology mapping
 2. `opt_design` — logic optimisation
 3. `place_design` — placement with Explore directive
@@ -375,6 +382,7 @@ genus -batch -files genus_synth.tcl
 ```
 
 **Flow steps executed:**
+
 1. `read_hdl` — Ingests the `filelist.f` containing the hierarchical datapath components.
 2. `elaborate` — Triggers module linkage against `top.sdc` constraints (100 MHz target, 2 ns I/O delays).
 3. `synthesize -to_mapped` — Maps design to target standard cell libraries (using vectorless power activity assumptions).
@@ -467,6 +475,7 @@ Target: **xc7z020clg484-1** (ZedBoard). Total device resources shown for referen
 | Estimated power | ~5 mW | — | negligible |
 
 **Register budget breakdown:**
+
 - `buy_buf[0:7]`:  8 × 145 = 1160 bits
 - `sell_buf[0:7]`: 8 × 145 = 1160 bits
 - `trade_buf[0:7]`: 8 × 176 = 1408 bits
@@ -488,6 +497,7 @@ The Rust/C++ and Verilog implementations differ in one architectural dimension:
 | Role | Full standalone matching engine | FPGA co-processor for batch matching |
 
 **In the full PS+PL system**, the ARM Cortex-A9 (PS) would:
+
 1. Maintain the resting order book in DDR3 memory
 2. Before each FPGA batch: merge new orders + top residuals → send combined batch
 3. After FPGA DONE: read residuals from `buy_buf`/`sell_buf` via AXI, update the resting book
