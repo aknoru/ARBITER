@@ -40,8 +40,6 @@ rust-build:
 	$(CARGO) build --release
 	@echo "Rust build complete: target/release/bame"
 
-rust-run: rust-build
-	$(CARGO) run --release -- $(ORDERS)
 
 # ===========================================================================
 # C++ targets  (delegates to cpp/Makefile)
