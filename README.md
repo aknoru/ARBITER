@@ -198,12 +198,11 @@ timestamp,order_id,side,price,quantity
 # Build (optimised)
 cargo build --release
 
-# Run against test vectors (produces stdout identical to golden_output.txt)
-cargo run --release -- tests/orders.txt
+# Run binary 
+./bame (BAME binary and itch_binary must be in same directory.)
 
 # Or via root Makefile:
 make rust-build
-make rust-run
 ```
 
 ### 4.2 C++ Benchmark Implementation
