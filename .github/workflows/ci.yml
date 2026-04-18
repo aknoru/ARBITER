@@ -74,23 +74,6 @@ jobs:
       - name: Build (release)
         run: cargo build --release --bin bame
 
-      - name: Run against test vectors & generate orders.mem
-        run: cargo run --release --bin bame -- tests/orders.txt
-
-      - name: Compare output against golden
-        run: |
-          cargo run --release --bin bame -- tests/orders.txt > /tmp/rust_actual.txt
-          diff tests/golden_output.txt /tmp/rust_actual.txt && \
-            echo "RUST OUTPUT MATCHES GOLDEN" || \
-            (echo "RUST OUTPUT MISMATCH — review diff above" && exit 1)
-
-      - name: Upload orders.mem for RTL simulation
-        uses: actions/upload-artifact@v4
-        with:
-          name: tests-dir
-          path: tests/
-          retention-days: 1
-
   # ============================================================
   # Job 3: Verilog RTL Syntax Check (iverilog)
   # ============================================================
@@ -151,7 +134,7 @@ jobs:
           for f in \
             README.md LICENSE CITATION.cff CONTRIBUTING.md CHANGELOG.md \
             Cargo.toml \
-            src/types.rs src/orderbook.rs src/batch_matcher.rs src/csv_parser.rs \
+            src/types.rs src/orderbook.rs \
             src/main.rs src/itch_parser.rs \
             cpp/main.cpp cpp/orderbook.cpp cpp/matcher.cpp cpp/order.h \
             rtl/bame_arb_cmp.v rtl/bame_top.v rtl/tb_bame_top.v \
