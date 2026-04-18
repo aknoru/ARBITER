@@ -205,7 +205,42 @@ cargo build --release
 make rust-build
 ```
 
-### 4.2 C++ Benchmark Implementation
+### 4.2 Rust Benchmark Implementation
+
+```bash
+ITCH Processing
+
+ITCH Parser Processing...
+
+Success...
+
+ITCH Parsing Statistics:
+Total Messages: 240017065
+Total Time: 9.229 seconds
+Speed: 26006032 msg/second
+Latency: 38 ns
+
+LOB Performance
+
+LOB Processing...
+
+Success...
+
+Performance Metrics:
+Total Messages: 240017065
+ITCH Latency: 205 ns
+Total Time: 49.208 seconds
+Speed: 4877625 msg/second
+
+Orderbook Statistics:
+Total Add Orders: 117145568
+Total Execute Orders: 5722824
+Total Cancel Orders: 2787676
+Total Delete Orders: 114360997
+Total Replace Orders: 0
+```
+
+### 4.3 C++ Benchmark Implementation
 
 **Requirements:** g++ 7+ with C++17 (`-std=c++17`), MinGW on Windows
 
@@ -240,7 +275,7 @@ BOOK BUY  price=98 qty=6 order_id=105
 BOOK SELL price=102 qty=3 order_id=106
 ```
 
-### 4.3 RTL Simulation (Vivado)
+### 4.4 RTL Simulation (Vivado)
 
 **Requirements:** Vivado ML Standard 2022.2+  
 **Simulator:** xsim (bundled with Vivado)
@@ -303,7 +338,7 @@ gtkwave rtl/bame_sim.vcd
 - Match pointers (`buy_ptr`, `sell_ptr`, `match_cond`)
 - Output handshake (`output_valid`, `output_ready`, `trade_out`, `done`)
 
-### 4.4 RTL Synthesis + Implementation (Vivado)
+### 4.5 RTL Synthesis + Implementation (Vivado)
 
 **Requirements:** Vivado ML Standard 2022.2+ with xc7z020 device support
 
@@ -325,7 +360,7 @@ vivado -mode batch -source rtl/synth_bame.tcl
 
 All five report types are written to `results/`.
 
-### 4.5 ASIC Synthesis (Cadence Genus)
+### 4.6 ASIC Synthesis (Cadence Genus)
 
 **Requirements:** Cadence Genus Synthesis Solution, CentOS / RHEL environment.
 
