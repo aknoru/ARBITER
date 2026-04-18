@@ -6,14 +6,14 @@ use std::fs::File;
 use std::io::BufReader;
 use std::time::Instant;
 
-use itch_parser::{ItchMessage, parse_message};
+use itch_parser::{parse_message, ItchMessage};
 use types::{Order, OrderBook};
 
 fn main() {
     println!("ITCH Processing\n");
     println!("ITCH Parser Processing...\n");
 
-    let file = File::open("12302019.NASDAQ_ITCH50").expect("file not found");
+    let file = File::open("itch_binary").expect("file not found");
     let mut reader = BufReader::new(file);
 
     let mut total_messages = 0u64;
