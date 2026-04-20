@@ -52,12 +52,12 @@ bench: $(TARGET)
 .PHONY: check
 check: $(TARGET)
 	@echo "Running engine and comparing with golden output..."
-	@./$(TARGET) $(ORDERS) > /tmp/actual_output.txt 2>/dev/null
-	@if diff -q $(GOLDEN) /tmp/actual_output.txt > /dev/null 2>&1; then \
+	@./$(TARGET) $(ORDERS) > .actual_output.txt 2>/dev/null
+	@if diff -q $(GOLDEN) .actual_output.txt > /dev/null 2>&1; then \
 	    echo "PASS: output matches golden_output.txt"; \
 	else \
 	    echo "FAIL: output differs from golden_output.txt"; \
-	    diff $(GOLDEN) /tmp/actual_output.txt; \
+	    diff $(GOLDEN) .actual_output.txt; \
 	    exit 1; \
 	fi
 

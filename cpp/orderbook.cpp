@@ -25,7 +25,7 @@ void OrderBook::add_limit_order(const Order& order) {
     orders_[order.id] = order;
 }
 
-void OrderBook::execute_order(uint32_t order_id, uint32_t qty) {
+void OrderBook::execute_order(uint64_t order_id, uint32_t qty) {
     auto it = orders_.find(order_id);
     if (it == orders_.end()) return;
 
@@ -46,12 +46,12 @@ void OrderBook::execute_order(uint32_t order_id, uint32_t qty) {
     }
 }
 
-void OrderBook::cancel_order(uint32_t order_id, uint32_t qty) {
+void OrderBook::cancel_order(uint64_t order_id, uint32_t qty) {
     // A cancel is a partial or full quantity reduction — identical to execute.
     execute_order(order_id, qty);
 }
 
-void OrderBook::delete_order(uint32_t order_id) {
+void OrderBook::delete_order(uint64_t order_id) {
     auto it = orders_.find(order_id);
     if (it == orders_.end()) return;
 
@@ -82,7 +82,7 @@ std::vector<Order> OrderBook::drain_buys() {
     for (int p = static_cast<int>(MAX_PRICE) - 1; p >= 0; --p) {
         auto& level = bids_[p];
         while (!level.orders.empty()) {
-            uint32_t id = level.orders.front();
+            uint64_t id = level.orders.front();
             level.orders.pop_front();
             auto it = orders_.find(id);
             if (it != orders_.end()) {
@@ -101,7 +101,7 @@ std::vector<Order> OrderBook::drain_asks() {
     for (uint32_t p = 0; p < MAX_PRICE; ++p) {
         auto& level = asks_[p];
         while (!level.orders.empty()) {
-            uint32_t id = level.orders.front();
+            uint64_t id = level.orders.front();
             level.orders.pop_front();
             auto it = orders_.find(id);
             if (it != orders_.end()) {

@@ -11,7 +11,7 @@
 
 struct PriceLevel {
     uint64_t             total_qty = 0;
-    std::deque<uint32_t> orders;   // front = oldest (FIFO priority)
+    std::deque<uint64_t> orders;   // front = oldest (FIFO priority)
 };
 
 // ============================================================
@@ -33,9 +33,9 @@ public:
 
     // ---- Order management ------------------------------------------------
     void add_limit_order(const Order& order);
-    void execute_order(uint32_t order_id, uint32_t qty);
-    void cancel_order (uint32_t order_id, uint32_t qty); // = partial execute
-    void delete_order (uint32_t order_id);               // full delete
+    void execute_order(uint64_t order_id, uint32_t qty);
+    void cancel_order (uint64_t order_id, uint32_t qty); // = partial execute
+    void delete_order (uint64_t order_id);               // full delete
 
     // ---- Drain (used by batch_matcher before every batch) ----------------
     /// Remove and return all BUY orders; bids side becomes empty.
@@ -55,5 +55,5 @@ public:
 private:
     std::vector<PriceLevel>             bids_;   // indexed by price (0..MAX_PRICE-1)
     std::vector<PriceLevel>             asks_;
-    std::unordered_map<uint32_t, Order> orders_; // order_id -> Order
+    std::unordered_map<uint64_t, Order> orders_; // order_id -> Order
 };

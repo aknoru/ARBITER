@@ -1,0 +1,4 @@
+C:/arbiter/BAME/bameplatform/zynq_fsbl/build/CMakeFiles/fsbl.elf.dir
+C:/arbiter/BAME/bameplatform/zynq_fsbl/build/CMakeFiles/print_build_info.dir
+C:/arbiter/BAME/bameplatform/zynq_fsbl/build/CMakeFiles/edit_cache.dir
+C:/arbiter/BAME/bameplatform/zynq_fsbl/build/CMakeFiles/rebuild_cache.dir

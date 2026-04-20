@@ -49,7 +49,7 @@ create_bd_cell -type ip -vlnv xilinx.com:ip:processing_system7:5.5 processing_sy
 apply_bd_automation -rule xilinx.com:bd_rule:processing_system7 -config {make_external "FIXED_IO, DDR" }  [get_bd_cells processing_system7_0]
 
 set_property -dict [list \
-    CONFIG.PCW_FPGA0_PERIPHERAL_FREQMHZ {100} \
+    CONFIG.PCW_FPGA0_PERIPHERAL_FREQMHZ {50} \
     CONFIG.PCW_USE_FABRIC_INTERRUPT {1} \
     CONFIG.PCW_IRQ_F2P_INTR {1} \
 ] [get_bd_cells processing_system7_0]
@@ -69,17 +69,32 @@ set_property -dict [list \
 apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Master "/processing_system7_0/M_AXI_GP0" intc_ip "New AXI Interconnect" Clk_xbar "Auto" Clk_master "Auto" Clk_slave "Auto" }  [get_bd_intf_pins bame_axi_wrapper_0/s_axi]
 apply_bd_automation -rule xilinx.com:bd_rule:axi4 -config { Master "/processing_system7_0/M_AXI_GP0" intc_ip "New AXI Interconnect" Clk_xbar "Auto" Clk_master "Auto" Clk_slave "Auto" }  [get_bd_intf_pins axi_fifo_0/S_AXI]
 
-# 6. Connect AXI-Stream Interfaces
-connect_bd_intf_net [get_bd_intf_pins axi_fifo_0/AXI_STR_TXD] [get_bd_intf_pins bame_axi_wrapper_0/s_axis_orders]
-connect_bd_intf_net [get_bd_intf_pins bame_axi_wrapper_0/m_axis_trades] [get_bd_intf_pins axi_fifo_0/AXI_STR_RXD]
+# 6. Connect AXI-Stream Interfaces via DWidth Converters (32-bit <=> 256-bit)
+create_bd_cell -type ip -vlnv xilinx.com:ip:axis_dwidth_converter:1.1 tx_conv
+set_property -dict [list CONFIG.S_TDATA_NUM_BYTES {4} CONFIG.M_TDATA_NUM_BYTES {32}] [get_bd_cells tx_conv]
+
+create_bd_cell -type ip -vlnv xilinx.com:ip:axis_dwidth_converter:1.1 rx_conv
+set_property -dict [list CONFIG.S_TDATA_NUM_BYTES {32} CONFIG.M_TDATA_NUM_BYTES {4}] [get_bd_cells rx_conv]
+
+connect_bd_intf_net [get_bd_intf_pins axi_fifo_0/AXI_STR_TXD] [get_bd_intf_pins tx_conv/S_AXIS]
+connect_bd_intf_net [get_bd_intf_pins tx_conv/M_AXIS] [get_bd_intf_pins bame_axi_wrapper_0/s_axis_orders]
+
+connect_bd_intf_net [get_bd_intf_pins bame_axi_wrapper_0/m_axis_trades] [get_bd_intf_pins rx_conv/S_AXIS]
+connect_bd_intf_net [get_bd_intf_pins rx_conv/M_AXIS] [get_bd_intf_pins axi_fifo_0/AXI_STR_RXD]
+
+# Wire clocks and resets for converters
+connect_bd_net [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins tx_conv/aclk]
+connect_bd_net [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins rx_conv/aclk]
+connect_bd_net [get_bd_pins rst_ps7_0_50M/peripheral_aresetn] [get_bd_pins tx_conv/aresetn]
+connect_bd_net [get_bd_pins rst_ps7_0_50M/peripheral_aresetn] [get_bd_pins rx_conv/aresetn]
 
 # 7. Connect Interrupts
 connect_bd_net [get_bd_pins bame_axi_wrapper_0/irq] [get_bd_pins processing_system7_0/IRQ_F2P]
 
 # 8. Clocks and Resets
-connect_bd_net [get_bd_pins processing_system7_0/FCLK_CLK0] [get_bd_pins axi_fifo_0/s_axi_aclk]
-connect_bd_net [get_bd_pins rst_ps7_0_100M/peripheral_aresetn] [get_bd_pins axi_fifo_0/s_axi_aresetn]
-
+# Notice: s_axi_aclk and s_axi_aresetn for axi_fifo_0 are already connected by apply_bd_automation.
+# Set FREQ_HZ property to resolve IP_Flow 19-11770 warning.
+set_property -dict [list CONFIG.FREQ_HZ {50000000}] [get_bd_pins bame_axi_wrapper_0/aclk]
 # 9. Force Address Assignments for Driver Parity
 assign_bd_address [get_bd_addr_segs {bame_axi_wrapper_0/s_axi/reg0}]
 set_property offset 0x40000000 [get_bd_addr_segs {processing_system7_0/Data/SEG_bame_axi_wrapper_0_reg0}]

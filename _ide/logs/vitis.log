@@ -1,0 +1,220 @@
+19:07:04 INFO  : updated workspace path: C:\arbiter\BAME
+19:07:04 INFO  : cmd.exe, /C, empyro.bat repo -st   C:\Xilinx\2025.2.1\Vitis\data\embeddedsw
+19:07:08 INFO  : [INFO]: Initializing repositories
+19:07:08 INFO  : [INFO]: Successfully set the EmbeddedSW path, refer .repo.yaml for more details.
+19:07:08 INFO  : Successfully created repository data at C:\arbiter\BAME/_ide\.wsdata
+19:07:08 INFO  : cmd.exe, /C, empyro.bat get_template_data -d C:\Users\rouna\AppData\Local\Temp\rigel_lopper_rouna3929835251050409515 -r C:\arbiter\BAME\_ide\.wsdata\.repo.yaml
+19:07:09 INFO  : Embedded Template List generated successfully
+19:08:09 INFO  : Using sdt generation script from C:\Xilinx\2025.2.1\Vitis\vitis-server\scripts\platformutil.tcl
+19:08:09 INFO  : cmd.exe, /C, sdtgen.bat C:\Xilinx\2025.2.1\Vitis\vitis-server\scripts\platformutil.tcl C:\arbiter\BAME\vivado\bame_master\bamewrapper.xsa C:\arbiter\BAME\.rigel_lopper_temp_platform\bamewrapper\hw\sdt
+19:08:19 INFO  : INFO: C:\arbiter\BAME\.rigel_lopper_temp_platform\bamewrapper\hw\sdt exists. Files will be overwritten
+19:08:19 INFO  : -xsa C:\arbiter\BAME\vivado\bame_master\bamewrapper.xsa
+19:08:19 INFO  : -dir C:\arbiter\BAME\.rigel_lopper_temp_platform\bamewrapper\hw\sdt
+19:08:19 INFO  : -board_dts 
+19:08:19 INFO  : -include_dts 
+19:08:19 INFO  : -repo C:/Xilinx/2025.2.1/Vitis/data/system-device-tree-xlnx
+19:08:19 INFO  : -zocl disable
+19:08:19 INFO  : INFO: [Hsi 55-2053] elapsed time for repository (C:/Xilinx/2025.2.1/Vitis/data/embeddedsw) loading 0 seconds
+19:08:19 INFO  : SDT generated successfully
+19:08:19 INFO  : Lopper command for cpu List generation: lopper.bat --enhanced --werror -f -O C:\arbiter\BAME\.rigel_lopper -i lop-cpu-oslist.dts C:\arbiter\BAME\.rigel_lopper_temp_platform\bamewrapper\hw\sdt\system-top.dts
+19:08:19 INFO  : cmd.exe, /C, lopper.bat --enhanced --werror -f -O C:\arbiter\BAME\.rigel_lopper -i lop-cpu-oslist.dts C:\arbiter\BAME\.rigel_lopper_temp_platform\bamewrapper\hw\sdt\system-top.dts
+19:08:23 INFO  : CPU List generated successfully
+19:08:36 INFO  : Platform bameplatform creation started.
+19:08:36 INFO  : Lopper command for cpu List generation: lopper.bat --enhanced --werror -f -O C:\arbiter\BAME\.rigel_lopper -i lop-cpu-oslist.dts C:\arbiter\BAME\bameplatform\hw\sdt\system-top.dts
+19:08:36 INFO  : cmd.exe, /C, lopper.bat --enhanced --werror -f -O C:\arbiter\BAME\.rigel_lopper -i lop-cpu-oslist.dts C:\arbiter\BAME\bameplatform\hw\sdt\system-top.dts
+19:08:38 INFO  : CPU List generated successfully
+19:08:38 INFO  : SDT generated successfully.
+19:08:38 INFO  : ZYNQ: Using the QEMU args from install at  : C:\Xilinx\2025.2.1\Vitis\data\emulation\platforms\zynq\sw\a9_linux\qemu\qemu_args.txt
+19:08:38 INFO  : ZYNQ: Using the QEMU args from install at  : C:\Xilinx\2025.2.1\Vitis\data\emulation\platforms\zynq\sw\a9_standalone\qemu\qemu_args.txt
+19:08:38 INFO  : ZYNQ: Using the QEMU args from install at  : C:\Xilinx\2025.2.1\Vitis\data\emulation\platforms\zynq\sw\a9_standalone\qemu\qemu_args.txt
+19:08:38 INFO  : lopper command to generate BSP :empyro.bat create_bsp -w C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp -p ps7_cortexa9_0 -o standalone -s C:\arbiter\BAME\bameplatform\hw\sdt\system-top.dts -t zynq_fsbl -r C:\arbiter\BAME\_ide\.wsdata\.repo.yaml
+19:08:38 INFO  : cmd.exe, /C, empyro.bat create_bsp -w C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp -p ps7_cortexa9_0 -o standalone -s C:\arbiter\BAME\bameplatform\hw\sdt\system-top.dts -t zynq_fsbl -r C:\arbiter\BAME\_ide\.wsdata\.repo.yaml
+19:08:38 INFO  : lopper command to generate BSP :empyro.bat create_bsp -w C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp -p ps7_cortexa9_0 -o standalone -s C:\arbiter\BAME\bameplatform\hw\sdt\system-top.dts -t empty_application -r C:\arbiter\BAME\_ide\.wsdata\.repo.yaml
+19:08:38 INFO  : cmd.exe, /C, empyro.bat create_bsp -w C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp -p ps7_cortexa9_0 -o standalone -s C:\arbiter\BAME\bameplatform\hw\sdt\system-top.dts -t empty_application -r C:\arbiter\BAME\_ide\.wsdata\.repo.yaml
+19:09:05 INFO  : [INFO]: Starting domain creation
+19:09:05 INFO  : [INFO]: Generating Domain-specific DTS for ps7_cortexa9_0
+19:09:05 INFO  : [INFO]: Generating required metadata from domain specific DT
+19:09:05 INFO  : [INFO]: Successfully created Domain at C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:09:05 INFO  : Successfully Generated Domain C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:09:05 INFO  : Domain standalone_ps7_cortexa9_0 added successfully.
+19:09:06 INFO  : [INFO]: Starting domain creation
+19:09:06 INFO  : [INFO]: Generating Domain-specific DTS for ps7_cortexa9_0
+19:09:06 INFO  : [INFO]: Generating required metadata from domain specific DT
+19:09:06 INFO  : [INFO]: Successfully created Domain at C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:09:06 INFO  : Successfully Generated Domain C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:09:06 INFO  : lopper command to create baremetal application :empyro.bat create_app --src_dir C:\arbiter\BAME\bameplatform\zynq_fsbl -t zynq_fsbl -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp -n fsbl -r C:\arbiter\BAME\_ide\.wsdata\.repo.yaml
+19:09:06 INFO  : cmd.exe, /C, empyro.bat validate_bsp -t zynq_fsbl -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp -r C:\arbiter\BAME\_ide\.wsdata\.repo.yaml
+19:09:08 INFO  : Successfully validated template zynq_fsbl
+19:09:08 INFO  : cmd.exe, /C, empyro.bat create_app --src_dir C:\arbiter\BAME\bameplatform\zynq_fsbl -t zynq_fsbl -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp -n fsbl -r C:\arbiter\BAME\_ide\.wsdata\.repo.yaml
+19:09:14 INFO  : [INFO]: Generating Linker script for zynq_fsbl
+19:09:14 INFO  : [INFO]: Successfully Created Application sources at C:/arbiter/BAME/bameplatform/zynq_fsbl
+19:09:14 INFO  : Successfully created Application C:\arbiter\BAME\bameplatform\zynq_fsbl
+19:09:14 INFO  : Platform FSBL Boot domain added successfully.
+19:09:14 INFO  : created .gitignore file for the project C:\arbiter\BAME\bameplatform
+19:09:14 INFO  : Platform creation finished successfully.
+19:09:14 INFO  : Platform Quick Build initiated.
+19:09:14 INFO  : Generating Export directory
+19:09:15 INFO  : Generated platform metadata for creating application(s) based on platform bameplatform.
+19:09:24 INFO  : BSP build will be initiated for Domain standalone_ps7_cortexa9_0
+19:09:24 INFO  : BSP build will be initiated for Domain zynq_fsbl
+19:09:24 INFO  : Generating BSP for the domain C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:09:24 INFO  : Generating BSP for the domain C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:09:24 INFO  : lopper command to reconfigure BSP :empyro.bat reconfig_bsp -d C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:09:24 INFO  : lopper command to reconfigure BSP :empyro.bat reconfig_bsp -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:09:24 INFO  : cmd.exe, /C, empyro.bat reconfig_bsp -d C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:09:24 INFO  : cmd.exe, /C, empyro.bat reconfig_bsp -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:09:24 INFO  : Domain reconfigured successfully
+19:09:24 INFO  : Generating BSP for the domain C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:09:24 INFO  : lopper command to build BSP :empyro.bat build_bsp -d C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:09:24 INFO  : cmd.exe, /C, empyro.bat build_bsp -d C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:09:24 INFO  : Domain reconfigured successfully
+19:09:24 INFO  : Generating BSP for the domain C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:09:24 INFO  : lopper command to build BSP :empyro.bat build_bsp -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:09:24 INFO  : cmd.exe, /C, empyro.bat build_bsp -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:09:33 INFO  : Domain build successfully
+19:09:33 INFO  : Domain build successfully
+19:09:33 INFO  : Generating Boot ELFs
+19:09:33 INFO  : lopper command to retarget baremetal application :empyro.bat retarget_app -s C:\arbiter\BAME\bameplatform\zynq_fsbl -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp -b C:\arbiter\BAME\bameplatform\zynq_fsbl\build
+19:09:33 INFO  : cmd.exe, /C, empyro.bat retarget_app -s C:\arbiter\BAME\bameplatform\zynq_fsbl -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp -b C:\arbiter\BAME\bameplatform\zynq_fsbl\build
+19:09:34 INFO  : [INFO]: Retargeting app
+19:09:34 INFO  : [INFO]: Updating link libraries based on new domain
+19:09:34 INFO  : Successfully retargeted Application C:\arbiter\BAME\bameplatform\zynq_fsbl
+19:09:34 INFO  : lopper command to build baremetal application :empyro.bat build_app --src_dir C:\arbiter\BAME\bameplatform\zynq_fsbl --build_dir C:\arbiter\BAME\bameplatform\zynq_fsbl\build
+19:09:34 INFO  : cmd.exe, /C, empyro.bat build_app --src_dir C:\arbiter\BAME\bameplatform\zynq_fsbl --build_dir C:\arbiter\BAME\bameplatform\zynq_fsbl\build
+19:09:39 INFO  : Successfully building the baremetal applicationC:\arbiter\BAME\bameplatform\zynq_fsbl\build
+19:09:39 INFO  : Generating Export directory
+19:09:40 INFO  : Platform Build Finished successfully.
+19:09:57 INFO  : cmd.exe, /C, empyro.bat validate_bsp -t empty_application -d C:\arbiter\BAME\bameplatform\export\bameplatform\sw\standalone_ps7_cortexa9_0 -r C:\arbiter\BAME\_ide\.wsdata\.repo.yaml
+19:09:58 INFO  : Successfully validated template empty_application
+19:10:13 INFO  : lopper command to create baremetal application :empyro.bat create_app --src_dir C:\arbiter\BAME\app_bame\src -t empty_application -d C:\arbiter\BAME\bameplatform\export\bameplatform\sw\standalone_ps7_cortexa9_0 -n app_bame -r C:\arbiter\BAME\_ide\.wsdata\.repo.yaml
+19:10:13 INFO  : cmd.exe, /C, empyro.bat validate_bsp -t empty_application -d C:\arbiter\BAME\bameplatform\export\bameplatform\sw\standalone_ps7_cortexa9_0 -r C:\arbiter\BAME\_ide\.wsdata\.repo.yaml
+19:10:14 INFO  : Successfully validated template empty_application
+19:10:14 INFO  : cmd.exe, /C, empyro.bat create_app --src_dir C:\arbiter\BAME\app_bame\src -t empty_application -d C:\arbiter\BAME\bameplatform\export\bameplatform\sw\standalone_ps7_cortexa9_0 -n app_bame -r C:\arbiter\BAME\_ide\.wsdata\.repo.yaml
+19:10:19 INFO  : [INFO]: Generating Linker script for empty_application
+19:10:19 INFO  : [INFO]: Successfully Created Application sources at C:/arbiter/BAME/app_bame/src
+19:10:19 INFO  : Successfully created Application C:\arbiter\BAME\app_bame\src
+19:10:19 INFO  : created .gitignore file for the project C:\arbiter\BAME\app_bame
+19:10:19 INFO  : The hardware specification used by project 'C:\arbiter\BAME\app_bame' is out of sync with the platform. Resource files extracted from the hardware specification will be updated.
+19:10:19 INFO  : The updated bitstream files are copied from platform to folder 'C:\arbiter\BAME\app_bame\_ide\bitstream' in project 'C:\arbiter\BAME\app_bame'.
+19:10:19 INFO  : The updated ps init files are copied from platform to folder 'C:\arbiter\BAME\app_bame\_ide\psinit' in project 'C:\arbiter\BAME\app_bame'.
+19:10:38 INFO  : BSP build will be initiated for Domain zynq_fsbl
+19:10:38 INFO  : BSP build will be initiated for Domain standalone_ps7_cortexa9_0
+19:10:38 INFO  : Generating BSP for the domain C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:10:38 INFO  : Generating BSP for the domain C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:10:38 INFO  : lopper command to reconfigure BSP :empyro.bat reconfig_bsp -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:10:38 INFO  : lopper command to reconfigure BSP :empyro.bat reconfig_bsp -d C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:10:38 INFO  : cmd.exe, /C, empyro.bat reconfig_bsp -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:10:38 INFO  : cmd.exe, /C, empyro.bat reconfig_bsp -d C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:10:39 INFO  : Domain reconfigured successfully
+19:10:39 INFO  : Generating BSP for the domain C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:10:39 INFO  : lopper command to build BSP :empyro.bat build_bsp -d C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:10:39 INFO  : cmd.exe, /C, empyro.bat build_bsp -d C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:10:39 INFO  : Domain reconfigured successfully
+19:10:39 INFO  : Generating BSP for the domain C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:10:39 INFO  : lopper command to build BSP :empyro.bat build_bsp -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:10:39 INFO  : cmd.exe, /C, empyro.bat build_bsp -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:10:41 INFO  : Domain build successfully
+19:10:41 INFO  : Domain build successfully
+19:10:41 INFO  : Generating Boot ELFs
+19:10:41 INFO  : lopper command to retarget baremetal application :empyro.bat retarget_app -s C:\arbiter\BAME\bameplatform\zynq_fsbl -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp -b C:\arbiter\BAME\bameplatform\zynq_fsbl\build
+19:10:41 INFO  : cmd.exe, /C, empyro.bat retarget_app -s C:\arbiter\BAME\bameplatform\zynq_fsbl -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp -b C:\arbiter\BAME\bameplatform\zynq_fsbl\build
+19:10:42 INFO  : [INFO]: Retargeting app
+19:10:42 INFO  : [INFO]: Updating link libraries based on new domain
+19:10:42 INFO  : Successfully retargeted Application C:\arbiter\BAME\bameplatform\zynq_fsbl
+19:10:42 INFO  : lopper command to build baremetal application :empyro.bat build_app --src_dir C:\arbiter\BAME\bameplatform\zynq_fsbl --build_dir C:\arbiter\BAME\bameplatform\zynq_fsbl\build
+19:10:42 INFO  : cmd.exe, /C, empyro.bat build_app --src_dir C:\arbiter\BAME\bameplatform\zynq_fsbl --build_dir C:\arbiter\BAME\bameplatform\zynq_fsbl\build
+19:10:45 INFO  : Successfully building the baremetal applicationC:\arbiter\BAME\bameplatform\zynq_fsbl\build
+19:10:45 INFO  : Generating Export directory
+19:10:45 INFO  : Platform Build Finished successfully.
+19:10:46 INFO  : lopper command to retarget baremetal application :empyro.bat retarget_app -s c:\arbiter\BAME\app_bame\src -d C:\arbiter\BAME\bameplatform\export\bameplatform\sw\standalone_ps7_cortexa9_0 -b c:\arbiter\BAME\app_bame\build
+19:10:46 INFO  : cmd.exe, /C, empyro.bat retarget_app -s c:\arbiter\BAME\app_bame\src -d C:\arbiter\BAME\bameplatform\export\bameplatform\sw\standalone_ps7_cortexa9_0 -b c:\arbiter\BAME\app_bame\build
+19:10:47 INFO  : [INFO]: Retargeting app
+19:10:47 INFO  : [INFO]: Updating link libraries based on new domain
+19:10:47 INFO  : Successfully retargeted Application c:\arbiter\BAME\app_bame\src
+19:10:47 INFO  : Initiating build for the app_bame component.
+19:10:47 INFO  : cmd.exe, /C, empyro.bat build_app -s c:\arbiter\BAME\app_bame\src -b c:\arbiter\BAME\app_bame\build
+19:10:47 INFO  : Command: cmd.exe /C set CC= && set CXX= && empyro.bat build_app -s c:\arbiter\BAME\app_bame\src -b c:\arbiter\BAME\app_bame\build
+19:10:52 ERROR : app_bame build failed. 
+19:12:52 INFO  : BSP build will be initiated for Domain zynq_fsbl
+19:12:52 INFO  : BSP build will be initiated for Domain standalone_ps7_cortexa9_0
+19:12:52 INFO  : Generating BSP for the domain C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:12:52 INFO  : Generating BSP for the domain C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:12:52 INFO  : lopper command to reconfigure BSP :empyro.bat reconfig_bsp -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:12:52 INFO  : lopper command to reconfigure BSP :empyro.bat reconfig_bsp -d C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:12:52 INFO  : cmd.exe, /C, empyro.bat reconfig_bsp -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:12:52 INFO  : cmd.exe, /C, empyro.bat reconfig_bsp -d C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:12:53 INFO  : Domain reconfigured successfully
+19:12:53 INFO  : Generating BSP for the domain C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:12:53 INFO  : lopper command to build BSP :empyro.bat build_bsp -d C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:12:53 INFO  : cmd.exe, /C, empyro.bat build_bsp -d C:\arbiter\BAME\bameplatform\ps7_cortexa9_0\standalone_ps7_cortexa9_0\bsp
+19:12:53 INFO  : Domain reconfigured successfully
+19:12:53 INFO  : Generating BSP for the domain C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:12:53 INFO  : lopper command to build BSP :empyro.bat build_bsp -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:12:53 INFO  : cmd.exe, /C, empyro.bat build_bsp -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp
+19:12:54 INFO  : Domain build successfully
+19:12:54 INFO  : Domain build successfully
+19:12:54 INFO  : Generating Boot ELFs
+19:12:54 INFO  : lopper command to retarget baremetal application :empyro.bat retarget_app -s C:\arbiter\BAME\bameplatform\zynq_fsbl -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp -b C:\arbiter\BAME\bameplatform\zynq_fsbl\build
+19:12:54 INFO  : cmd.exe, /C, empyro.bat retarget_app -s C:\arbiter\BAME\bameplatform\zynq_fsbl -d C:\arbiter\BAME\bameplatform\zynq_fsbl\zynq_fsbl_bsp -b C:\arbiter\BAME\bameplatform\zynq_fsbl\build
+19:12:55 INFO  : [INFO]: Retargeting app
+19:12:55 INFO  : [INFO]: Updating link libraries based on new domain
+19:12:55 INFO  : Successfully retargeted Application C:\arbiter\BAME\bameplatform\zynq_fsbl
+19:12:55 INFO  : lopper command to build baremetal application :empyro.bat build_app --src_dir C:\arbiter\BAME\bameplatform\zynq_fsbl --build_dir C:\arbiter\BAME\bameplatform\zynq_fsbl\build
+19:12:55 INFO  : cmd.exe, /C, empyro.bat build_app --src_dir C:\arbiter\BAME\bameplatform\zynq_fsbl --build_dir C:\arbiter\BAME\bameplatform\zynq_fsbl\build
+19:12:58 INFO  : Successfully building the baremetal applicationC:\arbiter\BAME\bameplatform\zynq_fsbl\build
+19:12:58 INFO  : Generating Export directory
+19:12:58 INFO  : Platform Build Finished successfully.
+19:12:58 INFO  : lopper command to retarget baremetal application :empyro.bat retarget_app -s c:\arbiter\BAME\app_bame\src -d C:\arbiter\BAME\bameplatform\export\bameplatform\sw\standalone_ps7_cortexa9_0 -b c:\arbiter\BAME\app_bame\build
+19:12:58 INFO  : cmd.exe, /C, empyro.bat retarget_app -s c:\arbiter\BAME\app_bame\src -d C:\arbiter\BAME\bameplatform\export\bameplatform\sw\standalone_ps7_cortexa9_0 -b c:\arbiter\BAME\app_bame\build
+19:12:59 INFO  : [INFO]: Retargeting app
+19:12:59 INFO  : [INFO]: Updating link libraries based on new domain
+19:12:59 INFO  : Successfully retargeted Application c:\arbiter\BAME\app_bame\src
+19:12:59 INFO  : Initiating build for the app_bame component.
+19:12:59 INFO  : cmd.exe, /C, empyro.bat build_app -s c:\arbiter\BAME\app_bame\src -b c:\arbiter\BAME\app_bame\build
+19:12:59 INFO  : Command: cmd.exe /C set CC= && set CXX= && empyro.bat build_app -s c:\arbiter\BAME\app_bame\src -b c:\arbiter\BAME\app_bame\build
+19:13:13 INFO  : XSDB server has started successfully from frontend.
+19:13:13 INFO  : It has taken  4secs.
+19:13:14 INFO  : Connection to XSDB Server established.
+19:13:14 INFO  : It has taken  1secs.
+19:13:16 INFO  : connect -url tcp:127.0.0.1:3121
+19:13:16 INFO  : Done
+19:13:20 INFO  : bpremove -all
+19:13:29 ERROR : Failed to initialize the hardware. Could not find ARM device on the board for connection 'Local'.
+Check if the target is in:
+1. Split JTAG - No operations are possible with ARM DAP.
+2. Non JTAG bootmode - Bootrom may need time to enable DAP.
+Please try again.
+
+
+Troubleshooting hints:
+1. Check whether board is connected to system properly.
+2. In case of zynq board, check whether Digilent/Xilinx cable switch settings are correct.
+3. If you are using Xilinx Platform Cable USB, ensure that status LED is green.
+19:15:16 INFO  : connection terminated
+19:15:16 INFO  : connection terminated
+19:15:16 INFO  : scheduling shutdown timer for 2 seconds ...
+19:15:18 INFO  : Terminating Vitis C++ Server
+19:15:18 INFO  : Vitis C++ Server terminated
+10:12:06 INFO  : updated workspace path: C:\arbiter\BAME
+10:12:06 INFO  : Embedded Template List generated successfully
+10:12:07 INFO  : cmd.exe, /C, empyro.bat get_template_data -d C:\Users\rouna\AppData\Local\Temp\rigel_lopper_rouna7842069977868451319 -r C:\arbiter\BAME\_ide\.wsdata\.repo.yaml
+10:12:07 INFO  : Embedded Template List generated successfully
+10:12:07 INFO  : cmd.exe, /C, empyro.bat repo -st  C:\Xilinx\2025.2.1\Vitis\data\embeddedsw
+10:12:11 INFO  : [INFO]: Initializing repositories
+10:12:11 INFO  : [INFO]: Successfully set the EmbeddedSW path, refer .repo.yaml for more details.
+10:12:11 INFO  : Successfully created repository data at C:\Users\rouna\AppData\Local\Temp\rigel_lopper_rouna17178861642320039504
+10:12:11 INFO  : cmd.exe, /C, empyro.bat get_template_data -d C:\Users\rouna\AppData\Local\Temp\rigel_lopper_rouna1384214996621224561 -r C:\Users\rouna\AppData\Local\Temp\rigel_lopper_rouna17178861642320039504\.repo.yaml
+10:12:12 INFO  : Embedded Template List generated successfully
+16:29:56 INFO  : cmd.exe, /C, empyro.bat get_template_data -d C:\Users\rouna\AppData\Local\Temp\rigel_lopper_rouna9335863186909698655 -r C:\arbiter\BAME\_ide\.wsdata\.repo.yaml
+16:29:56 INFO  : created .gitignore file for the project C:\arbiter\BAME
+16:29:57 INFO  : Embedded Template List generated successfully
+16:29:58 INFO  : updated workspace path: C:\arbiter\BAME
+16:29:58 INFO  : cmd.exe, /C, empyro.bat get_template_data -d C:\Users\rouna\AppData\Local\Temp\rigel_lopper_rouna6054287397066025737 -r C:\arbiter\BAME\_ide\.wsdata\.repo.yaml
+16:29:58 INFO  : Embedded Template List generated successfully
+20:53:16 INFO  : connection terminated
+20:53:16 INFO  : connection terminated
+20:53:16 INFO  : scheduling shutdown timer for 2 seconds ...
+20:53:16 INFO  : scheduling shutdown timer for 2 seconds ...
+20:53:18 INFO  : Terminating Vitis C++ Server
+20:53:18 INFO  : Terminating Vitis C++ Server
+20:53:19 INFO  : Vitis C++ Server terminated
