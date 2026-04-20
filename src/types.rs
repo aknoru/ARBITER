@@ -49,3 +49,35 @@ impl OrderBook {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_price_level_default_is_empty() {
+        let level = PriceLevel::default();
+        assert_eq!(level.total_qty, 0);
+        assert!(level.orders.is_empty());
+    }
+
+    #[test]
+    fn test_orderbook_new_allocates_all_price_levels() {
+        let book = OrderBook::new();
+        assert_eq!(book.bids.len(), MAX_PRICE);
+        assert_eq!(book.asks.len(), MAX_PRICE);
+    }
+
+    #[test]
+    fn test_orderbook_new_all_levels_start_empty() {
+        let book = OrderBook::new();
+        assert!(book.bids.iter().all(|l| l.total_qty == 0 && l.orders.is_empty()));
+        assert!(book.asks.iter().all(|l| l.total_qty == 0 && l.orders.is_empty()));
+    }
+
+    #[test]
+    fn test_orderbook_new_orders_map_is_empty() {
+        let book = OrderBook::new();
+        assert!(book.orders.is_empty());
+    }
+}
